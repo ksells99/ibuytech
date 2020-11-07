@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
+import BasketScreen from "./screens/BasketScreen";
 
 const App = () => {
   return (
@@ -14,6 +15,8 @@ const App = () => {
           <Container>
             <Route path='/' component={HomeScreen} exact />
             <Route path='/product/:id' component={ProductScreen} />
+            {/* ? = optional - will either go straight to basket, or id will be included if adding item to basket */}
+            <Route path='/basket/:id?' component={BasketScreen} />
           </Container>
         </main>
         <Footer />

@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Image,
+  ListGroup,
+  Card,
+  Button,
+  Form,
+} from "react-bootstrap";
 import Rating from "../components/Rating";
 import Loading from "../components/Loading";
 import Message from "../components/Message";
@@ -11,7 +19,9 @@ import {
   clearProductDetails,
 } from "../actions/productActions";
 
-const ProductScreen = ({ match }) => {
+const ProductScreen = ({ history, match }) => {
+  const [quantity, setQuantity] = useState(1);
+
   const dispatch = useDispatch();
 
   // Get productDetails from state
@@ -28,6 +38,10 @@ const ProductScreen = ({ match }) => {
       dispatch(clearProductDetails());
     };
   }, [dispatch, match]);
+
+  const addToBasketHandler = () => {
+    history.push(`/basket/${match.params.id}?qty=${quantity}`);
+  };
 
   return (
     <div>
@@ -93,10 +107,35 @@ const ProductScreen = ({ match }) => {
                   </Row>
                 </ListGroup.Item>
 
+                {/* QTY SELECT - only show if product in stock */}
+                {product.countInStock > 0 && (
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>Qty</Col>
+                      <Col>
+                        {/* DROP DOWN BOX FOR QTY */}
+                        <Form.Control
+                          as='select'
+                          value={quantity}
+                          onChange={(e) => setQuantity(e.target.value)}
+                        >
+                          {/* Convert count in stock to array and get number, then show option for each (+1 as starting at 0) */}
+                          {[...Array(product.countInStock).keys()].map((x) => (
+                            <option key={x + 1} value={x + 1}>
+                              {x + 1}
+                            </option>
+                          ))}
+                        </Form.Control>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                )}
+
                 {/* ADD TO BASKET BTN */}
                 <ListGroup.Item>
                   {/* Button disabled if item out of stock */}
                   <Button
+                    onClick={addToBasketHandler}
                     className='btn-block'
                     type='button'
                     disabled={product.countInStock === 0}
