@@ -6,6 +6,7 @@ import connectDB from "./config/db.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 import productRoutes from "./routes/productRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 
@@ -13,12 +14,16 @@ connectDB();
 
 const app = express();
 
+// Allows us to accept JSON data in API request body
+app.use(express.json());
+
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
 // Link API calls to respective routes
 app.use("/api/products", productRoutes);
+app.use("/api/users", userRoutes);
 
 // Error handling middleware
 app.use(notFound);
