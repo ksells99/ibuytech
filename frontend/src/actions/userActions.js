@@ -1,5 +1,5 @@
 import axios from "axios";
-import { get } from "mongoose";
+
 import {
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
@@ -15,6 +15,7 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
 } from "../types/userTypes";
+import { USER_ORDERS_CLEAR } from "../types/orderTypes";
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -63,6 +64,7 @@ export const logout = () => (dispatch) => {
 
   // Dispatch to reducer to update state
   dispatch({ type: USER_LOGOUT });
+  dispatch({ type: USER_ORDERS_CLEAR });
 };
 
 export const register = (name, email, password) => async (dispatch) => {

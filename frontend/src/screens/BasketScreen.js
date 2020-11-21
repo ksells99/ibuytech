@@ -40,6 +40,7 @@ const BasketScreen = ({ match, location, history }) => {
   };
 
   const checkoutHandler = () => {
+    // Redirect to login screen if user not signed in, otherwise go to shipping screen
     history.push("/login?redirect=shipping");
   };
 

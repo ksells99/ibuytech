@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Button, Row, Col, Table } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loading from "../components/Loading";
 import { getUserDetails, updateUserProfile } from "../actions/userActions";
+import { getUserOrderList } from "../actions/orderActions";
 
 const ProfileScreen = ({ location, history }) => {
   // Initial register form state
@@ -24,19 +26,31 @@ const ProfileScreen = ({ location, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  //   Get user's orders from state
+  const userOrders = useSelector((state) => state.userOrders);
+  const {
+    loading: loadingUserOrders,
+    error: errorUserOrders,
+    orders,
+  } = userOrders;
+
   //   Get profile update success status
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
   const { success } = userUpdateProfile;
 
   useEffect(() => {
     // If user isn't logged in, redirect to login screen
+    console.log(user);
     if (!userInfo) {
       history.push("/login");
     } else {
       // If no user details in state, get them
       if (!user.name) {
         dispatch(getUserDetails("profile"));
-        // If data exists, add to form state
+        // Get user orders
+        dispatch(getUserOrderList());
+
+        // If user data exists, add to form state
       } else {
         setName(user.name);
         setEmail(user.email);
@@ -114,8 +128,58 @@ const ProfileScreen = ({ location, history }) => {
           </Button>
         </Form>
       </Col>
+
+      {/* USER ORDERS LIST */}
       <Col md={9}>
         <h2>Your Orders</h2>
+        {loadingUserOrders ? (
+          <Loading />
+        ) : errorUserOrders ? (
+          <Message variant='danger'>{errorUserOrders}</Message>
+        ) : (
+          <Table striped bordered hover responsive className='table-sm'>
+            <thead>
+              <tr>
+                {/* <th>ID</th> */}
+                <th>Date</th>
+                <th>Total</th>
+                <th>Paid</th>
+                <th>Delivered</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order._id}>
+                  {/* <td>{order._id}</td> */}
+                  <td>{order.createdAt.substring(0, 10)}</td>
+                  <td>{order.totalPrice}</td>
+                  <td>
+                    {order.isPaid ? (
+                      order.paidAt.substring(0, 10)
+                    ) : (
+                      <i className='fas fa-times' style={{ color: "red" }}></i>
+                    )}
+                  </td>
+                  <td>
+                    {order.isDelivered ? (
+                      order.deliveredAt.substring(0, 10)
+                    ) : (
+                      <i className='fas fa-times' style={{ color: "red" }}></i>
+                    )}
+                  </td>
+                  <td>
+                    <LinkContainer to={`/order/${order._id}`}>
+                      <Button variant='light'>
+                        <i className='fas fa-arrow-circle-right'></i>
+                      </Button>
+                    </LinkContainer>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
       </Col>
     </Row>
   );
