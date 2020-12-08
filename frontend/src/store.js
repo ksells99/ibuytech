@@ -4,6 +4,9 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import {
   productListReducer,
   productDetailsReducer,
+  productDeleteReducer,
+  productCreateReducer,
+  productUpdateReducer,
 } from "./reducers/productReducers";
 
 import { basketReducer } from "./reducers/basketReducers";
@@ -12,9 +15,14 @@ import {
   userRegisterReducer,
   userDetailsReducer,
   userUpdateProfileReducer,
+  allUsersReducer,
+  deleteUserReducer,
+  updateUserReducer,
 } from "./reducers/userReducers";
 import {
+  allOrderReducer,
   orderCreateReducer,
+  orderDeliverReducer,
   orderDetailsReducer,
   orderPayReducer,
   userOrderReducer,
@@ -23,15 +31,23 @@ import {
 const reducer = combineReducers({
   productList: productListReducer,
   productDetails: productDetailsReducer,
+  productDelete: productDeleteReducer,
+  productCreate: productCreateReducer,
+  productUpdate: productUpdateReducer,
   basket: basketReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
+  allUsers: allUsersReducer,
+  deleteUser: deleteUserReducer,
+  updateUser: updateUserReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
+  orderDeliver: orderDeliverReducer,
   userOrders: userOrderReducer,
+  allOrders: allOrderReducer,
 });
 
 // Get basket from LS - checks if present, if not just returns an empty array

@@ -9,9 +9,16 @@ import {
   ORDER_PAY_SUCCESS,
   ORDER_PAY_FAIL,
   ORDER_PAY_RESET,
+  ORDER_DELIVER_REQUEST,
+  ORDER_DELIVER_SUCCESS,
+  ORDER_DELIVER_FAIL,
+  ORDER_DELIVER_RESET,
   USER_ORDERS_REQUEST,
   USER_ORDERS_SUCCESS,
   USER_ORDERS_FAIL,
+  ALL_ORDERS_REQUEST,
+  ALL_ORDERS_SUCCESS,
+  ALL_ORDERS_FAIL,
 } from "../types/orderTypes";
 import axios from "axios";
 
@@ -129,6 +136,47 @@ export const payOrder = (orderId, paymentResult) => async (
   }
 };
 
+// DELIVERED
+export const deliverOrder = (order) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_DELIVER_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        // Get token from userInfo state
+        Authorization: `Bearer ${getState().userLogin.userInfo.token}`,
+      },
+    };
+
+    // Put request to API
+    const { data } = await axios.put(
+      `/api/orders/${order._id}/deliver`,
+      {},
+      config
+    );
+
+    // Then send data to reducer
+    dispatch({
+      type: ORDER_DELIVER_SUCCESS,
+      payload: data,
+    });
+
+    //
+  } catch (error) {
+    dispatch({
+      type: ORDER_DELIVER_FAIL,
+      // If specific error returned, dispatch it, otherwise dispatch generic error
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// USER ORDERS
 export const getUserOrderList = () => async (dispatch, getState) => {
   try {
     dispatch({
@@ -155,6 +203,42 @@ export const getUserOrderList = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_ORDERS_FAIL,
+      // If specific error returned, dispatch it, otherwise dispatch generic error
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// ALL ORDERS
+export const getAllOrders = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ALL_ORDERS_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        // Get token from userInfo state
+        Authorization: `Bearer ${getState().userLogin.userInfo.token}`,
+      },
+    };
+
+    // Get data from API
+    const { data } = await axios.get("/api/orders", config);
+
+    // Then send data to reducer
+    dispatch({
+      type: ALL_ORDERS_SUCCESS,
+      payload: data,
+    });
+
+    //
+  } catch (error) {
+    dispatch({
+      type: ALL_ORDERS_FAIL,
       // If specific error returned, dispatch it, otherwise dispatch generic error
       payload:
         error.response && error.response.data.message

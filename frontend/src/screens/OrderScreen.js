@@ -6,10 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Message from "../components/Message";
 import Loading from "../components/Loading";
-import { getOrderDetails, payOrder } from "../actions/orderActions";
-import { ORDER_PAY_RESET } from "../types/orderTypes";
+import {
+  getOrderDetails,
+  payOrder,
+  deliverOrder,
+} from "../actions/orderActions";
+import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from "../types/orderTypes";
 
-const OrderScreen = ({ match }) => {
+const OrderScreen = ({ match, history }) => {
   // Get order ID from URL
   const orderId = match.params.id;
 
@@ -17,12 +21,18 @@ const OrderScreen = ({ match }) => {
 
   const dispatch = useDispatch();
 
-  // Get orderdetails & pay data from state
+  // Get orderdetails/userinfo (used to check if admin) & pay/delivered data from state
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   const orderPay = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPay;
+
+  const orderDeliver = useSelector((state) => state.orderDeliver);
+  const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
 
   if (!loading) {
     // Function to ensure item totals below are always 2dp
@@ -40,6 +50,11 @@ const OrderScreen = ({ match }) => {
   }
 
   useEffect(() => {
+    // Redirect to login if user not logged in
+    if (!userInfo) {
+      history.push("/login");
+    }
+
     const addPayPalScript = async () => {
       // Get PP client ID from server
       const { data: clientId } = await axios.get("/api/config/paypal");
@@ -59,11 +74,13 @@ const OrderScreen = ({ match }) => {
       document.body.appendChild(script);
     };
 
-    // Get order details if no order in state, or if payment state changes
-    if (!order || order._id !== orderId || successPay) {
-      // Dispatch to reducer to set pay sucess back to null - otherwise will be in a loop
+    // Get order details if no order in state, or if payment/delivery state changes
+    if (!order || order._id !== orderId || successPay || successDeliver) {
+      // Dispatch to reducer to set pay/deliver sucess back to null - otherwise will be in a loop
       dispatch({ type: ORDER_PAY_RESET });
+      dispatch({ type: ORDER_DELIVER_RESET });
 
+      // Get order details
       dispatch(getOrderDetails(orderId));
 
       // Else if order isn't paid
@@ -77,12 +94,17 @@ const OrderScreen = ({ match }) => {
         setSdkReady(true);
       }
     }
-  }, [order, orderId, successPay, dispatch]);
+  }, [order, orderId, successPay, successDeliver, dispatch]);
 
   const successPaymentHandler = (paymentResult) => {
-    console.log(paymentResult);
     // Dispatch pay action - pass in ID and result from PP
     dispatch(payOrder(orderId, paymentResult));
+  };
+
+  const deliverHandler = () => {
+    // Dispatch action to mark order as delivered, pass in order
+    dispatch(deliverOrder(order));
+    console.log(order);
   };
 
   return loading ? (
@@ -217,6 +239,23 @@ const OrderScreen = ({ match }) => {
                   )}
                 </ListGroup.Item>
               )}
+
+              {/* MARK AS DELIVERED BUTTON - only visible to admin */}
+              {loadingDeliver && <Loading />}
+              {userInfo &&
+                userInfo.isAdmin &&
+                order.isPaid &&
+                !order.isDelivered && (
+                  <ListGroup.Item>
+                    <Button
+                      type='button'
+                      className='btn btn-block'
+                      onClick={deliverHandler}
+                    >
+                      Mark as Delivered
+                    </Button>
+                  </ListGroup.Item>
+                )}
             </ListGroup>
           </Card>
         </Col>

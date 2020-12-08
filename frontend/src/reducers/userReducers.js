@@ -12,6 +12,16 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
+  USER_UPDATE_FAIL,
+  USER_UPDATE_RESET,
+  ALL_USERS_REQUEST,
+  ALL_USERS_SUCCESS,
+  ALL_USERS_FAIL,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAIL,
 } from "../types/userTypes";
 
 // LOGIN
@@ -109,6 +119,84 @@ export const userUpdateProfileReducer = (state = {}, action) => {
       };
     case USER_LOGOUT:
       return {};
+    default:
+      // Return initial state
+      return state;
+  }
+};
+
+// GET ALL USERS
+export const allUsersReducer = (state = { users: [] }, action) => {
+  switch (action.type) {
+    case ALL_USERS_REQUEST:
+      return {
+        loading: true,
+      };
+    case ALL_USERS_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        users: action.payload,
+      };
+    case ALL_USERS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case USER_LOGOUT:
+      return { users: [] };
+    default:
+      // Return initial state
+      return state;
+  }
+};
+
+// DELETE USER
+export const deleteUserReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DELETE_USER_REQUEST:
+      return {
+        loading: true,
+        success: false,
+      };
+    case DELETE_USER_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case DELETE_USER_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case USER_LOGOUT:
+      return {};
+    default:
+      // Return initial state
+      return state;
+  }
+};
+
+// UPDATE USER
+export const updateUserReducer = (state = { user: {} }, action) => {
+  switch (action.type) {
+    case USER_UPDATE_REQUEST:
+      return {
+        loading: true,
+      };
+    case USER_UPDATE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case USER_UPDATE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case USER_LOGOUT:
+    case USER_UPDATE_RESET:
+      return { user: {} };
     default:
       // Return initial state
       return state;

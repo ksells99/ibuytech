@@ -1,3 +1,4 @@
+import path from "path";
 import express from "express";
 import dotenv from "dotenv";
 import colors from "colors";
@@ -8,6 +9,7 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
 
 dotenv.config();
 
@@ -26,11 +28,17 @@ app.get("/", (req, res) => {
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/upload", uploadRoutes);
 
 // Paypal client ID route
 app.get("/api/config/paypal", (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)
 );
+
+// Make uploads folder static - get current path
+const __dirname = path.resolve();
+// Then make it static - use current path (__dirname), then go to /uploads
+app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
 // Error handling middleware
 app.use(notFound);

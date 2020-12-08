@@ -102,12 +102,13 @@ const ProfileScreen = ({ location, history }) => {
               onChange={(e) => setEmail(e.target.value)}
             ></Form.Control>
           </Form.Group>
+          <hr />
 
           <Form.Group controlId='password'>
-            <Form.Label>Password</Form.Label>
+            <Form.Label>Change Password</Form.Label>
             <Form.Control
               type='password'
-              placeholder='Enter a password'
+              placeholder='Enter a new password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             ></Form.Control>
@@ -117,7 +118,7 @@ const ProfileScreen = ({ location, history }) => {
             <Form.Label>Confirm Password</Form.Label>
             <Form.Control
               type='password'
-              placeholder='Confirm password'
+              placeholder='Confirm new password'
               value={password2}
               onChange={(e) => setPassword2(e.target.value)}
             ></Form.Control>

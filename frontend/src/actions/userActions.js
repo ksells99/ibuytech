@@ -14,6 +14,15 @@ import {
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
+  USER_UPDATE_FAIL,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
+  ALL_USERS_FAIL,
+  ALL_USERS_REQUEST,
+  ALL_USERS_SUCCESS,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAIL,
 } from "../types/userTypes";
 import { USER_ORDERS_CLEAR } from "../types/orderTypes";
 
@@ -192,6 +201,119 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
+      // If specific error returned, dispatch it, otherwise dispatch generic error
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// GET ALL USERS
+export const getUsers = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ALL_USERS_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        // Get token from userInfo state
+        Authorization: `Bearer ${getState().userLogin.userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/users`, config);
+
+    // Then send data to reducer
+    dispatch({
+      type: ALL_USERS_SUCCESS,
+      payload: data,
+    });
+
+    //
+  } catch (error) {
+    dispatch({
+      type: ALL_USERS_FAIL,
+      // If specific error returned, dispatch it, otherwise dispatch generic error
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// DELETE USER
+export const deleteUser = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: DELETE_USER_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        // Get token from userInfo state
+        Authorization: `Bearer ${getState().userLogin.userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.delete(`/api/users/${id}`, config);
+
+    dispatch({
+      type: DELETE_USER_SUCCESS,
+    });
+
+    //
+  } catch (error) {
+    dispatch({
+      type: DELETE_USER_FAIL,
+      // If specific error returned, dispatch it, otherwise dispatch generic error
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// UPDATE USER
+export const updateUser = (user) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_UPDATE_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        // Get token from userInfo state
+        Authorization: `Bearer ${getState().userLogin.userInfo.token}`,
+      },
+    };
+
+    // PUT request to update - pass in new user object
+    const { data } = await axios.put(`/api/users/${user._id}`, user, config);
+
+    dispatch({
+      type: USER_UPDATE_SUCCESS,
+    });
+
+    dispatch({
+      type: USER_DETAILS_SUCCESS,
+      payload: data,
+    });
+
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data,
+    });
+
+    //
+  } catch (error) {
+    dispatch({
+      type: USER_UPDATE_FAIL,
       // If specific error returned, dispatch it, otherwise dispatch generic error
       payload:
         error.response && error.response.data.message

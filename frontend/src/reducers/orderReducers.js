@@ -9,10 +9,18 @@ import {
   ORDER_PAY_SUCCESS,
   ORDER_PAY_FAIL,
   ORDER_PAY_RESET,
+  ORDER_DELIVER_REQUEST,
+  ORDER_DELIVER_SUCCESS,
+  ORDER_DELIVER_FAIL,
+  ORDER_DELIVER_RESET,
   USER_ORDERS_REQUEST,
   USER_ORDERS_SUCCESS,
   USER_ORDERS_FAIL,
   USER_ORDERS_CLEAR,
+  ALL_ORDERS_REQUEST,
+  ALL_ORDERS_SUCCESS,
+  ALL_ORDERS_FAIL,
+  ALL_ORDERS_CLEAR,
 } from "../types/orderTypes";
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -92,6 +100,32 @@ export const orderPayReducer = (state = {}, action) => {
   }
 };
 
+export const orderDeliverReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ORDER_DELIVER_REQUEST:
+      return {
+        loading: true,
+      };
+    case ORDER_DELIVER_SUCCESS: {
+      return {
+        loading: false,
+        success: true,
+      };
+    }
+    case ORDER_DELIVER_FAIL: {
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    }
+    case ORDER_DELIVER_RESET: {
+      return {};
+    }
+    default:
+      return state;
+  }
+};
+
 export const userOrderReducer = (state = { orders: [] }, action) => {
   switch (action.type) {
     case USER_ORDERS_REQUEST:
@@ -111,6 +145,34 @@ export const userOrderReducer = (state = { orders: [] }, action) => {
       };
     }
     case USER_ORDERS_CLEAR: {
+      return {
+        orders: [],
+      };
+    }
+    default:
+      return state;
+  }
+};
+
+export const allOrderReducer = (state = { orders: [] }, action) => {
+  switch (action.type) {
+    case ALL_ORDERS_REQUEST:
+      return {
+        loading: true,
+      };
+    case ALL_ORDERS_SUCCESS: {
+      return {
+        loading: false,
+        orders: action.payload,
+      };
+    }
+    case ALL_ORDERS_FAIL: {
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    }
+    case ALL_ORDERS_CLEAR: {
       return {
         orders: [],
       };
