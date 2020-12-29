@@ -45,7 +45,7 @@ const ProfileScreen = ({ location, history }) => {
       history.push("/login");
     } else {
       // If no user details in state, get them
-      if (!user.name) {
+      if (userDetails && !user.name) {
         dispatch(getUserDetails("profile"));
         // Get user orders
         dispatch(getUserOrderList());

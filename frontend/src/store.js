@@ -7,6 +7,8 @@ import {
   productDeleteReducer,
   productCreateReducer,
   productUpdateReducer,
+  productReviewCreateReducer,
+  productTopRatedReducer,
 } from "./reducers/productReducers";
 
 import { basketReducer } from "./reducers/basketReducers";
@@ -34,6 +36,8 @@ const reducer = combineReducers({
   productDelete: productDeleteReducer,
   productCreate: productCreateReducer,
   productUpdate: productUpdateReducer,
+  productReviewCreate: productReviewCreateReducer,
+  productTopRated: productTopRatedReducer,
   basket: basketReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
@@ -50,15 +54,15 @@ const reducer = combineReducers({
   allOrders: allOrderReducer,
 });
 
-// Get basket from LS - checks if present, if not just returns an empty array
-const basketItemsFromLocalStorage = localStorage.getItem("basketItems")
-  ? JSON.parse(localStorage.getItem("basketItems"))
-  : [];
-
 // Get user info from LS - checks if present, if not just return null
 const userInfoFromLocalStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
   : null;
+
+// Get basket from LS  - checks if present, if not just returns an empty array
+const basketItemsFromLocalStorage = localStorage.getItem("basketItems")
+  ? JSON.parse(localStorage.getItem("basketItems"))
+  : [];
 
 // Get shipping info from LS - checks if present, if not just return empty object
 const shippingAddressFromLocalStorage = localStorage.getItem("shippingAddress")

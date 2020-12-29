@@ -11,7 +11,11 @@ import {
   Card,
 } from "react-bootstrap";
 import Message from "../components/Message";
-import { addToBasket, removeFromBasket } from "../actions/basketActions";
+import {
+  addToBasket,
+  getUserBasket,
+  removeFromBasket,
+} from "../actions/basketActions";
 
 const BasketScreen = ({ match, location, history }) => {
   // Get product ID of item added to basket from URL - won't be present if going directly to basket page
@@ -25,6 +29,10 @@ const BasketScreen = ({ match, location, history }) => {
   // Get basket contents from state
   const basket = useSelector((state) => state.basket);
   const { basketItems } = basket;
+
+  //   Get user login status from state
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   useEffect(() => {
     // If product ID exists in URL (i.e. add to basket button clicked), dispatch action to add it to basket - pass in ID and qty
@@ -60,6 +68,7 @@ const BasketScreen = ({ match, location, history }) => {
           // Otherwise list basket items
           <ListGroup variant='flush'>
             {/* Loop through basket items and display info */}
+
             {basketItems.map((item) => (
               <ListGroup.Item key={item.product}>
                 <Row>

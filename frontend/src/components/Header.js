@@ -1,9 +1,10 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, Route } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import { logout } from "../actions/userActions";
+import SearchBar from "./SearchBar";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -22,32 +23,43 @@ const Header = () => {
 
   return (
     <header style={{ width: "100vw" }}>
-      <Navbar bg='primary' variant='dark' expand='lg' collapseOnSelect>
+      <Navbar bg='' variant='light' expand='lg' collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
-            <Navbar.Brand>iBuyTech</Navbar.Brand>
+            <Navbar.Brand>
+              <h2 style={{ fontWeight: "600" }}>iBuyTech</h2>
+            </Navbar.Brand>
           </LinkContainer>
 
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
 
           <Navbar.Collapse id='basic-navbar-nav'>
+            {/* Search box - need to get history to pass in as prop */}
+            <Route render={({ history }) => <SearchBar history={history} />} />
             <Nav className='ml-auto'>
-              <LinkContainer to='/basket'>
-                <Nav.Link>
-                  <i className='fas fa-shopping-cart mr-2'></i>Basket
-                </Nav.Link>
-              </LinkContainer>
+              {userInfo && userInfo.isAdmin ? null : (
+                <LinkContainer to='/basket'>
+                  <Nav.Link>
+                    <i className='fas fa-shopping-cart mr-2'></i>Basket
+                  </Nav.Link>
+                </LinkContainer>
+              )}
 
               {/* IF USER LOGGED IN, SHOW PROFILE/OPTIONS - ELSE SHOW LOGIN LINK */}
+              {/* IF ADMIN, HIDE THESE */}
               {userInfo ? (
-                <NavDropdown title={userInfo.name} id='username'>
-                  <LinkContainer to='/profile'>
-                    <NavDropdown.Item>Profile</NavDropdown.Item>
-                  </LinkContainer>
-                  <NavDropdown.Item onClick={logoutHandler}>
-                    Logout
-                  </NavDropdown.Item>
-                </NavDropdown>
+                !userInfo.isAdmin ? (
+                  <>
+                    <NavDropdown title={userInfo.name} id='username'>
+                      <LinkContainer to='/profile'>
+                        <NavDropdown.Item>Profile</NavDropdown.Item>
+                      </LinkContainer>
+                      <NavDropdown.Item onClick={logoutHandler}>
+                        Logout
+                      </NavDropdown.Item>
+                    </NavDropdown>
+                  </>
+                ) : null
               ) : (
                 <LinkContainer to='/login'>
                   <Nav.Link>
@@ -58,7 +70,7 @@ const Header = () => {
 
               {/* IF ADMIN, SHOW USER LIST LINK */}
               {userInfo && userInfo.isAdmin && (
-                <NavDropdown title='Admin' id='adminmenu'>
+                <NavDropdown title={userInfo.name} id='adminmenu'>
                   <LinkContainer to='/admin/userlist'>
                     <NavDropdown.Item>Users</NavDropdown.Item>
                   </LinkContainer>
@@ -68,6 +80,10 @@ const Header = () => {
                   <LinkContainer to='/admin/orderlist'>
                     <NavDropdown.Item>Orders</NavDropdown.Item>
                   </LinkContainer>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item onClick={logoutHandler}>
+                    Logout
+                  </NavDropdown.Item>
                 </NavDropdown>
               )}
             </Nav>

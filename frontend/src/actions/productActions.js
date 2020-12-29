@@ -16,16 +16,26 @@ import {
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_SUCCESS,
   PRODUCT_UPDATE_FAIL,
+  PRODUCT_CREATE_REVIEW_REQUEST,
+  PRODUCT_CREATE_REVIEW_SUCCESS,
+  PRODUCT_CREATE_REVIEW_FAIL,
+  PRODUCT_TOP_REQUEST,
+  PRODUCT_TOP_SUCCESS,
+  PRODUCT_TOP_FAIL,
 } from "../types/productTypes";
 
 // GET ALL PRODUCTS
-export const listProducts = () => async (dispatch) => {
+export const listProducts = (keyword = "", pageNumber = "") => async (
+  dispatch
+) => {
   try {
     // Send request to set loading to true
     dispatch({ type: PRODUCT_LIST_REQUEST });
 
-    // Get data and dispatch
-    const { data } = await axios.get("/api/products");
+    // Get data (pass in search keyword & page num if exists) and dispatch
+    const { data } = await axios.get(
+      `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
+    );
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: data,
@@ -175,6 +185,69 @@ export const updateProduct = (product) => async (dispatch, getState) => {
     dispatch({
       type: PRODUCT_UPDATE_FAIL,
       // If specific error returned, dispatch it, otherwise dispatch generic error
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// ADD PRODUCT REVIEW
+export const createProductReview = (productId, review) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    dispatch({
+      type: PRODUCT_CREATE_REVIEW_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        // Get token from userInfo state
+        Authorization: `Bearer ${getState().userLogin.userInfo.token}`,
+      },
+    };
+
+    // Send post request to API, pass in review data
+    await axios.post(`/api/products/${productId}/reviews`, review, config);
+
+    dispatch({
+      type: PRODUCT_CREATE_REVIEW_SUCCESS,
+    });
+
+    //
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_CREATE_REVIEW_FAIL,
+      // If specific error returned, dispatch it, otherwise dispatch generic error
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// GET TOP PRODUCTS
+export const listTopProducts = () => async (dispatch) => {
+  try {
+    // Send request to set loading to true
+    dispatch({ type: PRODUCT_TOP_REQUEST });
+
+    // Get data and dispatch
+    const { data } = await axios.get(`/api/products/top`);
+
+    dispatch({
+      type: PRODUCT_TOP_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_TOP_FAIL,
+      // If specific error returend, dispatch it, otherwise dispatch generic error
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
