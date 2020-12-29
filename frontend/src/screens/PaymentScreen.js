@@ -7,13 +7,17 @@ import CheckoutSteps from "../components/CheckoutSteps";
 import { savePaymentMethod } from "../actions/basketActions";
 
 const PaymentScreen = ({ history }) => {
-  // Get basket from state
-  const basket = useSelector((state) => state.basket);
-  // Then pull out shippingAddress
-  const { shippingAddress } = basket;
+  // // Get basket from state
+  // const basket = useSelector((state) => state.basket);
+  // // Then pull out shippingAddress
+  // const { shippingAddress } = basket;
+
+  //   Get user info (contains saved shipping address) from state
+  const userDetails = useSelector((state) => state.userDetails);
+  const { user } = userDetails;
 
   //   If no shipping address, redirect back to address page
-  if (!shippingAddress.address) {
+  if (!user.shippingAddress.address) {
     history.push("/shipping");
   }
 

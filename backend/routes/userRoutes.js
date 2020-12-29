@@ -5,6 +5,7 @@ import {
   registerUser,
   getUserProfile,
   updateUserProfile,
+  updateUserShippingAddress,
   getUsers,
   getUserById,
   updateUser,
@@ -25,6 +26,9 @@ router
   .route("/profile")
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile);
+
+// Update shipping address for user - PUT
+router.put("/shipping", protect, updateUserShippingAddress);
 
 // Get/Delete/Update user (need to be admin)
 router

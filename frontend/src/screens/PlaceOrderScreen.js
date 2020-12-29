@@ -5,10 +5,15 @@ import { Link } from "react-router-dom";
 import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { createOrder } from "../actions/orderActions";
+import { getUserDetails } from "../actions/userActions";
 
 const PlaceOrderScreen = ({ history }) => {
   // Get basket from state
   const basket = useSelector((state) => state.basket);
+
+  //   Get user info (contains saved shipping address) from state
+  const userDetails = useSelector((state) => state.userDetails);
+  const { user } = userDetails;
 
   // Function to ensure totals below are always 2dp
   const addDecimals = (num) => {
@@ -43,18 +48,22 @@ const PlaceOrderScreen = ({ history }) => {
   const { order, success, error } = orderCreate;
 
   useEffect(() => {
+    // If no user details in state, get them
+    if (userDetails && !user.shippingAddress) {
+      dispatch(getUserDetails("profile"));
+    }
     if (success) {
       // If order successful, take user to details of the order
       history.push(`/order/${order._id}`);
     }
-  }, [history, success, order]);
+  }, [history, success, order, user]);
 
   const placeOrderHandler = () => {
     // Dispatch create order action, pass in items, address, pricing from basket
     dispatch(
       createOrder({
         orderItems: basket.basketItems,
-        shippingAddress: basket.shippingAddress,
+        shippingAddress: user.shippingAddress,
         paymentMethod: basket.paymentMethod,
 
         shippingPrice: basket.shippingPrice,
@@ -74,9 +83,10 @@ const PlaceOrderScreen = ({ history }) => {
               <h3>Shipping</h3>
               <p>
                 <strong>Address: </strong>
-                {basket.shippingAddress.address}, {basket.shippingAddress.city},{" "}
-                {basket.shippingAddress.postalCode},{" "}
-                {basket.shippingAddress.country}
+                {user.shippingAddress && user.shippingAddress.address},{" "}
+                {user.shippingAddress && user.shippingAddress.city},{" "}
+                {user.shippingAddress && user.shippingAddress.postalCode},{" "}
+                {user.shippingAddress && user.shippingAddress.country}
               </p>
             </ListGroup.Item>
             <ListGroup.Item>

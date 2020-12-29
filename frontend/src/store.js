@@ -64,16 +64,10 @@ const basketItemsFromLocalStorage = localStorage.getItem("basketItems")
   ? JSON.parse(localStorage.getItem("basketItems"))
   : [];
 
-// Get shipping info from LS - checks if present, if not just return empty object
-const shippingAddressFromLocalStorage = localStorage.getItem("shippingAddress")
-  ? JSON.parse(localStorage.getItem("shippingAddress"))
-  : {};
-
 // Add basket & user info to initial state
 const initialState = {
   basket: {
     basketItems: basketItemsFromLocalStorage,
-    shippingAddress: shippingAddressFromLocalStorage,
   },
   userLogin: { userInfo: userInfoFromLocalStorage },
 };

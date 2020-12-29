@@ -1,28 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer";
 import CheckoutSteps from "../components/CheckoutSteps";
-import { saveShippingAddress } from "../actions/basketActions";
+import {
+  updateUserShippingAddress,
+  getUserDetails,
+} from "../actions/userActions";
 
 const ShippingScreen = ({ history }) => {
-  // Get basket from state
-  const basket = useSelector((state) => state.basket);
-  // Then pull out shippingAddress
-  const { shippingAddress } = basket;
+  //   Get user info (contains saved shipping address) from state
+  const userDetails = useSelector((state) => state.userDetails);
+  const { user } = userDetails;
 
   // Add this address to initial form state
-  const [address, setAddress] = useState(shippingAddress.address);
-  const [city, setCity] = useState(shippingAddress.city);
-  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
-  const [country, setCountry] = useState(shippingAddress.country);
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [country, setCountry] = useState("");
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    // If no user details in state, get them
+    if (userDetails && !user.shippingAddress) {
+      dispatch(getUserDetails("profile"));
+
+      // If user data exists, add to form state
+    } else {
+      setAddress(user.shippingAddress.address);
+      setCity(user.shippingAddress.city);
+      setPostalCode(user.shippingAddress.postalCode);
+      setCountry(user.shippingAddress.country);
+    }
+  }, [dispatch, history, user]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     // Dispatch action to save address
-    dispatch(saveShippingAddress({ address, city, postalCode, country }));
+    dispatch(updateUserShippingAddress({ address, city, postalCode, country }));
     // Proceed to payment screen
     history.push("/payment");
   };

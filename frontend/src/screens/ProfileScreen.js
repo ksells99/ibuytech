@@ -39,6 +39,7 @@ const ProfileScreen = ({ location, history }) => {
   const { success } = userUpdateProfile;
 
   useEffect(() => {
+    dispatch(getUserOrderList());
     // If user isn't logged in, redirect to login screen
     console.log(user);
     if (!userInfo) {

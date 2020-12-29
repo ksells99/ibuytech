@@ -5,48 +5,7 @@ import {
   BASKET_REMOVE_ITEM,
   BASKET_SAVE_PAYMENT_METHOD,
   BASKET_SAVE_SHIPPING_ADDRESS,
-  GET_USER_BASKET_REQUEST,
-  GET_USER_BASKET_SUCCESS,
-  GET_USER_BASKET_FAIL,
 } from "../types/basketTypes";
-
-// // GET USER BASKET FROM DB
-// export const getUserBasket = () => async (dispatch, getState) => {
-//   try {
-//     console.log("action");
-
-//     dispatch({
-//       type: GET_USER_BASKET_REQUEST,
-//     });
-
-//     const config = {
-//       headers: {
-//         // Get token from userInfo state
-//         Authorization: `Bearer ${getState().userLogin.userInfo.token}`,
-//       },
-//     };
-
-//     // Get data from API
-//     const { data } = await axios.get("/api/baskets", config);
-
-//     // Then send data to reducer
-//     dispatch({
-//       type: GET_USER_BASKET_SUCCESS,
-//       payload: data,
-//     });
-
-//     //
-//   } catch (error) {
-//     dispatch({
-//       type: GET_USER_BASKET_FAIL,
-//       // If specific error returned, dispatch it, otherwise dispatch generic error
-//       payload:
-//         error.response && error.response.data.message
-//           ? error.response.data.message
-//           : error.message,
-//     });
-//   }
-// };
 
 export const addToBasket = (id, quantity) => async (dispatch, getState) => {
   // Get details of product being added to basket
@@ -85,16 +44,16 @@ export const removeFromBasket = (id) => async (dispatch, getState) => {
   );
 };
 
-export const saveShippingAddress = (data) => async (dispatch) => {
-  // Dispatch to save address
-  dispatch({
-    type: BASKET_SAVE_SHIPPING_ADDRESS,
-    payload: data,
-  });
+// export const saveShippingAddress = (data) => async (dispatch) => {
+//   // Dispatch to save address to state
+//   dispatch({
+//     type: BASKET_SAVE_SHIPPING_ADDRESS,
+//     payload: data,
+//   });
 
-  // Also save address to LS
-  localStorage.setItem("shippingAddress", JSON.stringify(data));
-};
+//   // Also save address to LS
+//   localStorage.setItem("shippingAddress", JSON.stringify(data));
+// };
 
 export const savePaymentMethod = (data) => async (dispatch) => {
   // Dispatch to save payment method

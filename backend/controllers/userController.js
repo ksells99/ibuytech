@@ -56,6 +56,13 @@ const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
+    // Add blank shipping address
+    shippingAddress: {
+      address: "",
+      city: "",
+      postalCode: "",
+      country: "",
+    },
   });
 
   // If user is created successfully, send user data in response (used to auto login)
@@ -89,6 +96,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      shippingAddress: user.shippingAddress,
     });
 
     //   Else send error
@@ -127,6 +135,45 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       isAdmin: updatedUser.isAdmin,
       //   Call generateToken function imported above to get JWT, pass in updatedUser ID
       token: generateToken(updatedUser._id),
+    });
+
+    //   Else send error
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+
+// @desc    Update user's saved shipping address
+// @route   PUT /api/users/shipping
+// @access  Private
+
+const updateUserShippingAddress = asyncHandler(async (req, res) => {
+  // Find user by ID
+  const user = await User.findById(req.user._id);
+
+  //   If user exists, set new address
+  if (user) {
+    console.log(req.body);
+    // If new details submitted, update, if not keep as is
+    user.shippingAddress.address =
+      req.body.address || user.shippingAddress.address;
+    user.shippingAddress.city = req.body.city || user.shippingAddress.city;
+    user.shippingAddress.postalCode =
+      req.body.postalCode || user.shippingAddress.postalCode;
+    user.shippingAddress.country =
+      req.body.country || user.shippingAddress.country;
+
+    // Save user in DB
+    const updatedUser = await user.save();
+
+    //   Send new user data & generate new token
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      shippingAddress: updatedUser.shippingAddress,
     });
 
     //   Else send error
@@ -218,6 +265,7 @@ export {
   registerUser,
   getUserProfile,
   updateUserProfile,
+  updateUserShippingAddress,
   getUsers,
   getUserById,
   updateUser,

@@ -23,6 +23,9 @@ import {
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
   DELETE_USER_FAIL,
+  USER_UPDATE_SHIPPING_ADDRESS_REQUEST,
+  USER_UPDATE_SHIPPING_ADDRESS_SUCCESS,
+  USER_UPDATE_SHIPPING_ADDRESS_FAIL,
 } from "../types/userTypes";
 import { USER_ORDERS_CLEAR } from "../types/orderTypes";
 
@@ -201,6 +204,50 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
+      // If specific error returned, dispatch it, otherwise dispatch generic error
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// UPDATE USER SHIPPING ADDRESS
+export const updateUserShippingAddress = (shippingAddress) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    dispatch({
+      type: USER_UPDATE_SHIPPING_ADDRESS_REQUEST,
+    });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        // Get token from userInfo state
+        Authorization: `Bearer ${getState().userLogin.userInfo.token}`,
+      },
+    };
+
+    // Send new user data to users/profile route - PUT request
+    const { data } = await axios.put(
+      `/api/users/shipping`,
+      shippingAddress,
+      config
+    );
+
+    // Then send data to reducer
+    dispatch({
+      type: USER_UPDATE_SHIPPING_ADDRESS_SUCCESS,
+      payload: data,
+    });
+
+    //
+  } catch (error) {
+    dispatch({
+      type: USER_UPDATE_SHIPPING_ADDRESS_FAIL,
       // If specific error returned, dispatch it, otherwise dispatch generic error
       payload:
         error.response && error.response.data.message

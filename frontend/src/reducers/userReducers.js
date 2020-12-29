@@ -22,6 +22,9 @@ import {
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
   DELETE_USER_FAIL,
+  USER_UPDATE_SHIPPING_ADDRESS_REQUEST,
+  USER_UPDATE_SHIPPING_ADDRESS_SUCCESS,
+  USER_UPDATE_SHIPPING_ADDRESS_FAIL,
 } from "../types/userTypes";
 
 // LOGIN
@@ -41,6 +44,7 @@ export const userLoginReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       };
+
     case USER_LOGOUT:
       return {};
     default:
@@ -77,16 +81,19 @@ export const userRegisterReducer = (state = {}, action) => {
 export const userDetailsReducer = (state = { user: {} }, action) => {
   switch (action.type) {
     case USER_DETAILS_REQUEST:
+    case USER_UPDATE_SHIPPING_ADDRESS_REQUEST:
       return {
         ...state,
         loading: true,
       };
     case USER_DETAILS_SUCCESS:
+    case USER_UPDATE_SHIPPING_ADDRESS_SUCCESS:
       return {
         loading: false,
         user: action.payload,
       };
     case USER_DETAILS_FAIL:
+    case USER_UPDATE_SHIPPING_ADDRESS_FAIL:
       return {
         loading: false,
         error: action.payload,
@@ -112,6 +119,7 @@ export const userUpdateProfileReducer = (state = {}, action) => {
         success: true,
         userInfo: action.payload,
       };
+
     case USER_UPDATE_PROFILE_FAIL:
       return {
         loading: false,
