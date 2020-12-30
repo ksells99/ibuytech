@@ -18,11 +18,11 @@ import {
 } from "../actions/basketActions";
 
 const BasketScreen = ({ match, location, history }) => {
-  // Get product ID of item added to basket from URL - won't be present if going directly to basket page
-  const productId = match.params.id;
+  // // Get product ID of item added to basket from URL - won't be present if going directly to basket page
+  // const productId = match.params.id;
 
-  // Location.search gets query string from URL showing qty - only want number from ?qty=1 - if not there, just use 1
-  const qty = location.search ? Number(location.search.split("=")[1]) : 1;
+  // // Location.search gets query string from URL showing qty - only want number from ?qty=1 - if not there, just use 1
+  // const qty = location.search ? Number(location.search.split("=")[1]) : 1;
 
   const dispatch = useDispatch();
 
@@ -34,12 +34,12 @@ const BasketScreen = ({ match, location, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  useEffect(() => {
-    // If product ID exists in URL (i.e. add to basket button clicked), dispatch action to add it to basket - pass in ID and qty
-    if (productId) {
-      dispatch(addToBasket(productId, qty));
-    }
-  }, [dispatch, productId, qty]);
+  // useEffect(() => {
+  //   // If product ID exists in URL (i.e. add to basket button clicked), dispatch action to add it to basket - pass in ID and qty
+  //   if (productId) {
+  //     dispatch(addToBasket(productId, qty));
+  //   }
+  // }, [dispatch, productId, qty]);
 
   const removeFromBasketHandler = (id) => {
     dispatch(removeFromBasket(id));
@@ -82,6 +82,7 @@ const BasketScreen = ({ match, location, history }) => {
                   <Col md={2}>
                     {/* DROP DOWN BOX FOR CHANGING QTY */}
                     <Form.Control
+                      className='basket-qty-dropdown'
                       as='select'
                       value={item.quantity}
                       onChange={(e) =>

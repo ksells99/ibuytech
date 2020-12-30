@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import FormContainer from "../components/FormContainer";
+import CheckoutFormContainer from "../components/CheckoutFormContainer";
 import CheckoutSteps from "../components/CheckoutSteps";
 import {
   updateUserShippingAddress,
@@ -44,10 +44,10 @@ const ShippingScreen = ({ history }) => {
   };
 
   return (
-    <FormContainer>
-      <h1>Checkout</h1>
+    <CheckoutFormContainer className='checkout'>
+      <h3 className='text-center'>Checkout</h3>
       <CheckoutSteps step1 />
-      <h2>Shipping</h2>
+      <h5 className='font-weight-bold mb-4'>Shipping</h5>
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='address'>
           <Form.Label>Address Line 1</Form.Label>
@@ -97,7 +97,7 @@ const ShippingScreen = ({ history }) => {
           Continue
         </Button>
       </Form>
-    </FormContainer>
+    </CheckoutFormContainer>
   );
 };
 

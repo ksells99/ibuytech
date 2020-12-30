@@ -20,6 +20,7 @@ import {
   clearProductDetails,
   createProductReview,
 } from "../actions/productActions";
+import { addToBasket } from "../actions/basketActions";
 import { PRODUCT_CREATE_REVIEW_RESET } from "../types/productTypes";
 
 const ProductScreen = ({ history, match }) => {
@@ -62,7 +63,9 @@ const ProductScreen = ({ history, match }) => {
   }, [dispatch, match, successReview]);
 
   const addToBasketHandler = () => {
-    history.push(`/basket/${match.params.id}?qty=${quantity}`);
+    dispatch(addToBasket(product._id, quantity));
+    history.push("/basket");
+    // history.push(`/basket/${match.params.id}?qty=${quantity}`);
   };
 
   const submitReviewHandler = (e) => {
@@ -91,13 +94,13 @@ const ProductScreen = ({ history, match }) => {
           <Meta title={`${product.name} | iBuyTech`} />
           <Row>
             {/* IMAGE */}
-            <Col md={4}>
+            <Col md={4} className='product-page-section'>
               {/* Fluid = keeps image within parent container */}
               <Image src={product.image} alt={product.name} fluid />
             </Col>
 
             {/* PRODUCT DETAILS */}
-            <Col md={5}>
+            <Col md={5} className='product-page-section'>
               <ListGroup variant='flush'>
                 <ListGroup.Item className='no-border'>
                   <h4>{product.name}</h4>
@@ -120,7 +123,7 @@ const ProductScreen = ({ history, match }) => {
             </Col>
 
             {/* STOCK & BASKET */}
-            <Col md={3}>
+            <Col md={3} className='product-page-section'>
               <Card>
                 <ListGroup variant='flush'>
                   {/* STOCK AVAILABILITY */}

@@ -21,6 +21,7 @@ import {
   ALL_ORDERS_FAIL,
 } from "../types/orderTypes";
 import axios from "axios";
+import { logout } from "./userActions";
 
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
@@ -47,13 +48,17 @@ export const createOrder = (order) => async (dispatch, getState) => {
 
     //
   } catch (error) {
+    // Check if message contains failed token (expired) - if so, logout user
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorised - token failed") {
+      dispatch(logout());
+    }
     dispatch({
       type: ORDER_CREATE_FAIL,
-      // If specific error returned, dispatch it, otherwise dispatch generic error
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -82,13 +87,18 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
 
     //
   } catch (error) {
+    // Check if message contains failed token (expired) - if so, logout user
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorised - token failed") {
+      dispatch(logout());
+    }
+
     dispatch({
       type: ORDER_DETAILS_FAIL,
-      // If specific error returned, dispatch it, otherwise dispatch generic error
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -125,13 +135,18 @@ export const payOrder = (orderId, paymentResult) => async (
 
     //
   } catch (error) {
+    // Check if message contains failed token (expired) - if so, logout user
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorised - token failed") {
+      dispatch(logout());
+    }
+
     dispatch({
       type: ORDER_PAY_FAIL,
-      // If specific error returned, dispatch it, otherwise dispatch generic error
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -165,13 +180,18 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
 
     //
   } catch (error) {
+    // Check if message contains failed token (expired) - if so, logout user
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorised - token failed") {
+      dispatch(logout());
+    }
+
     dispatch({
       type: ORDER_DELIVER_FAIL,
-      // If specific error returned, dispatch it, otherwise dispatch generic error
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -201,13 +221,18 @@ export const getUserOrderList = () => async (dispatch, getState) => {
 
     //
   } catch (error) {
+    // Check if message contains failed token (expired) - if so, logout user
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorised - token failed") {
+      dispatch(logout());
+    }
+
     dispatch({
       type: USER_ORDERS_FAIL,
-      // If specific error returned, dispatch it, otherwise dispatch generic error
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -237,13 +262,18 @@ export const getAllOrders = () => async (dispatch, getState) => {
 
     //
   } catch (error) {
+    // Check if message contains failed token (expired) - if so, logout user
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorised - token failed") {
+      dispatch(logout());
+    }
+
     dispatch({
       type: ALL_ORDERS_FAIL,
-      // If specific error returned, dispatch it, otherwise dispatch generic error
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };

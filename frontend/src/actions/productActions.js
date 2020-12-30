@@ -23,6 +23,7 @@ import {
   PRODUCT_TOP_SUCCESS,
   PRODUCT_TOP_FAIL,
 } from "../types/productTypes";
+import { logout } from "./userActions";
 
 // GET ALL PRODUCTS
 export const listProducts = (keyword = "", pageNumber = "") => async (
@@ -107,13 +108,18 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
 
     //
   } catch (error) {
+    // Check if message contains failed token (expired) - if so, logout user
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorised - token failed") {
+      dispatch(logout());
+    }
+
     dispatch({
       type: PRODUCT_DELETE_FAIL,
-      // If specific error returned, dispatch it, otherwise dispatch generic error
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -142,13 +148,18 @@ export const createProduct = () => async (dispatch, getState) => {
 
     //
   } catch (error) {
+    // Check if message contains failed token (expired) - if so, logout user
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorised - token failed") {
+      dispatch(logout());
+    }
+
     dispatch({
       type: PRODUCT_CREATE_FAIL,
-      // If specific error returned, dispatch it, otherwise dispatch generic error
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -182,13 +193,18 @@ export const updateProduct = (product) => async (dispatch, getState) => {
 
     //
   } catch (error) {
+    // Check if message contains failed token (expired) - if so, logout user
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorised - token failed") {
+      dispatch(logout());
+    }
+
     dispatch({
       type: PRODUCT_UPDATE_FAIL,
-      // If specific error returned, dispatch it, otherwise dispatch generic error
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -220,13 +236,18 @@ export const createProductReview = (productId, review) => async (
 
     //
   } catch (error) {
+    // Check if message contains failed token (expired) - if so, logout user
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorised - token failed") {
+      dispatch(logout());
+    }
+
     dispatch({
       type: PRODUCT_CREATE_REVIEW_FAIL,
-      // If specific error returned, dispatch it, otherwise dispatch generic error
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };

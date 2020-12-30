@@ -152,13 +152,18 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 
     //
   } catch (error) {
+    // Check if message contains failed token (expired) - if so, logout user
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorised - token failed") {
+      dispatch(logout());
+    }
+
     dispatch({
       type: USER_DETAILS_FAIL,
-      // If specific error returned, dispatch it, otherwise dispatch generic error
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -202,13 +207,19 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 
     //
   } catch (error) {
+    // Check if message contains failed token (expired) - if so, logout user
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorised - token failed") {
+      dispatch(logout());
+    }
+
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
       // If specific error returned, dispatch it, otherwise dispatch generic error
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -231,7 +242,7 @@ export const updateUserShippingAddress = (shippingAddress) => async (
       },
     };
 
-    // Send new user data to users/profile route - PUT request
+    // Send new user data to users/shipping route - PUT request
     const { data } = await axios.put(
       `/api/users/shipping`,
       shippingAddress,
@@ -246,13 +257,19 @@ export const updateUserShippingAddress = (shippingAddress) => async (
 
     //
   } catch (error) {
+    // Check if message contains failed token (expired) - if so, logout user
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorised - token failed") {
+      dispatch(logout());
+    }
+
     dispatch({
       type: USER_UPDATE_SHIPPING_ADDRESS_FAIL,
       // If specific error returned, dispatch it, otherwise dispatch generic error
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -281,13 +298,19 @@ export const getUsers = () => async (dispatch, getState) => {
 
     //
   } catch (error) {
+    // Check if message contains failed token (expired) - if so, logout user
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorised - token failed") {
+      dispatch(logout());
+    }
+
     dispatch({
       type: ALL_USERS_FAIL,
       // If specific error returned, dispatch it, otherwise dispatch generic error
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -314,18 +337,24 @@ export const deleteUser = (id) => async (dispatch, getState) => {
 
     //
   } catch (error) {
+    // Check if message contains failed token (expired) - if so, logout user
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorised - token failed") {
+      dispatch(logout());
+    }
+
     dispatch({
       type: DELETE_USER_FAIL,
       // If specific error returned, dispatch it, otherwise dispatch generic error
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
 
-// UPDATE USER
+// UPDATE USER (ADMIN)
 export const updateUser = (user) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -359,13 +388,19 @@ export const updateUser = (user) => async (dispatch, getState) => {
 
     //
   } catch (error) {
+    // Check if message contains failed token (expired) - if so, logout user
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorised - token failed") {
+      dispatch(logout());
+    }
+
     dispatch({
       type: USER_UPDATE_FAIL,
       // If specific error returned, dispatch it, otherwise dispatch generic error
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };

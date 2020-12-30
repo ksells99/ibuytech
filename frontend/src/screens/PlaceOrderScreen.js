@@ -103,9 +103,9 @@ const PlaceOrderScreen = ({ history }) => {
               ) : (
                 <ListGroup variant='flush'>
                   {basket.basketItems.map((item, index) => (
-                    <ListGroup.Item key={index}>
+                    <ListGroup.Item key={index} style={{ paddingLeft: "0px" }}>
                       <Row>
-                        <Col md={1}>
+                        <Col>
                           <Image
                             src={item.image}
                             alt={item.name}
@@ -159,12 +159,18 @@ const PlaceOrderScreen = ({ history }) => {
                   <Col>
                     <strong>Total</strong>
                   </Col>
-                  <Col>£{basket.totalPrice}</Col>
+                  <Col>
+                    <strong>£{basket.totalPrice}</strong>
+                  </Col>
                 </Row>
               </ListGroup.Item>
-              <ListGroup.Item>
-                {error && <Message variant='danger'>{error}</Message>}
-              </ListGroup.Item>
+
+              {error && (
+                <ListGroup.Item>
+                  <Message variant='danger'>{error}</Message>
+                </ListGroup.Item>
+              )}
+
               <ListGroup.Item>
                 <Button
                   type='button'
