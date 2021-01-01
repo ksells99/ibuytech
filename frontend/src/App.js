@@ -23,6 +23,7 @@ const App = () => {
     <Router>
       <div className='App'>
         <Header />
+
         <main className='py-3'>
           <Container>
             <Route path='/' component={HomeScreen} exact />

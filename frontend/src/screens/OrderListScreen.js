@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import Moment from "react-moment";
 import Message from "../components/Message";
 import Loading from "../components/Loading";
 import { getAllOrders } from "../actions/orderActions";
@@ -29,7 +30,7 @@ const OrderListScreen = ({ history }) => {
 
   return (
     <div>
-      <h2>Orders</h2>
+      <h3>Orders</h3>
       {loading ? (
         <Loading />
       ) : error ? (
@@ -38,7 +39,7 @@ const OrderListScreen = ({ history }) => {
         <Table striped bordered hover responsive className='table-sm'>
           <thead>
             <tr>
-              <th>ID</th>
+              <th className='hide-md'>ID</th>
               <th>User</th>
               <th>Date</th>
               <th>Total Price</th>
@@ -50,21 +51,23 @@ const OrderListScreen = ({ history }) => {
           <tbody>
             {orders.map((order) => (
               <tr key={order._id}>
-                <td>{order._id}</td>
+                <td className='hide-md'>{order._id}</td>
                 <td>{order.user && order.user.name}</td>
-                <td>{order.createdAt.substring(0, 10)}</td>
+                <td>
+                  <Moment format='DD/MM/YYYY'>{order.createdAt}</Moment>
+                </td>
                 <td>£{order.totalPrice}</td>
-                {/* Show date if paid/delivered, otherwise show red cross */}
+
                 <td>
                   {order.isPaid ? (
-                    order.paidAt.substring(0, 10)
+                    <i className='fas fa-check' style={{ color: "green" }}></i>
                   ) : (
                     <i className='fas fa-times' style={{ color: "red" }}></i>
                   )}
                 </td>
                 <td>
                   {order.isDelivered ? (
-                    order.deliveredAt.substring(0, 10)
+                    <Moment format='DD/MM/YYYY'>{order.deliveredAt}</Moment>
                   ) : (
                     <i className='fas fa-times' style={{ color: "red" }}></i>
                   )}

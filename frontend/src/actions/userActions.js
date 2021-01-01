@@ -27,7 +27,8 @@ import {
   USER_UPDATE_SHIPPING_ADDRESS_SUCCESS,
   USER_UPDATE_SHIPPING_ADDRESS_FAIL,
 } from "../types/userTypes";
-import { USER_ORDERS_CLEAR } from "../types/orderTypes";
+import { ORDER_DETAILS_RESET, USER_ORDERS_CLEAR } from "../types/orderTypes";
+import { BASKET_CLEAR } from "../types/basketTypes";
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -71,12 +72,17 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 export const logout = () => (dispatch) => {
-  // Remove user info/token from LS
+  // Remove data from LS
   localStorage.removeItem("userInfo");
+  localStorage.removeItem("basketItems");
+  localStorage.removeItem("shippingAddress");
+  localStorage.removeItem("paymentMethod");
 
   // Dispatch to reducer to update state
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: USER_ORDERS_CLEAR });
+  dispatch({ type: ORDER_DETAILS_RESET });
+  dispatch({ type: BASKET_CLEAR });
 };
 
 export const register = (name, email, password) => async (dispatch) => {
@@ -378,11 +384,6 @@ export const updateUser = (user) => async (dispatch, getState) => {
 
     dispatch({
       type: USER_DETAILS_SUCCESS,
-      payload: data,
-    });
-
-    dispatch({
-      type: USER_LOGIN_SUCCESS,
       payload: data,
     });
 

@@ -14,6 +14,10 @@ const Header = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  // Get no. of basket items from state - used for badge count
+  const basket = useSelector((state) => state.basket);
+  const { basketItems } = basket;
+
   const logoutHandler = () => {
     // Dispatch action to logout
     dispatch(logout());
@@ -39,8 +43,15 @@ const Header = () => {
             <Nav className='ml-auto'>
               {userInfo && userInfo.isAdmin ? null : (
                 <LinkContainer to='/basket'>
-                  <Nav.Link>
-                    <i className='fas fa-shopping-cart mr-2'></i>Basket
+                  <Nav.Link exact>
+                    <i className='fas fa-shopping-cart mr-2'></i>
+
+                    {basketItems && basketItems.length > 0
+                      ? `Basket (${basketItems
+                          .reduce((acc, item) => acc + Number(item.quantity), 0)
+                          .toString()
+                          .replace(/^0+/, "")})`
+                      : "Basket"}
                   </Nav.Link>
                 </LinkContainer>
               )}
@@ -50,7 +61,11 @@ const Header = () => {
               {userInfo ? (
                 !userInfo.isAdmin ? (
                   <>
-                    <NavDropdown title={userInfo.name} id='username'>
+                    <NavDropdown
+                      // Show first name only - split at space if exists, then get first item (first name)
+                      title={userInfo.name.split(" ")[0]}
+                      id='username'
+                    >
                       <LinkContainer to='/profile'>
                         <NavDropdown.Item>Profile</NavDropdown.Item>
                       </LinkContainer>

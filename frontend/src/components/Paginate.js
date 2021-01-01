@@ -6,7 +6,7 @@ const Paginate = ({ pages, page, isAdmin = false, keyword = "" }) => {
   // Only show pagination if more than 1 page
   return (
     pages > 1 && (
-      <Pagination>
+      <Pagination color='dark'>
         {/* Map through number of pages */}
         {[...Array(pages).keys()].map((x) => (
           //   Link to next page - if search keyword exists, link to search URL - if not, link to normal page URL. If admin user, link to admin pagelist
@@ -20,7 +20,9 @@ const Paginate = ({ pages, page, isAdmin = false, keyword = "" }) => {
                 : `/admin/productList/page/${x + 1}`
             }
           >
-            <Pagination.Item active={x + 1 === page}>{x + 1}</Pagination.Item>
+            <Pagination.Item className='page-link-dark' active={x + 1 === page}>
+              {x + 1}
+            </Pagination.Item>
           </LinkContainer>
         ))}
       </Pagination>

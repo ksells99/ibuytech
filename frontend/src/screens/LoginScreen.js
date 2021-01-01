@@ -39,7 +39,7 @@ const LoginScreen = ({ location, history }) => {
   return (
     //   LOGIN FORM
     <FormContainer>
-      <h1>Login</h1>
+      <h3 className='my-4 font-weight-bold'>Login to your account</h3>
       {error && <Message variant='danger'>{error}</Message>}
       {loading && <Loading />}
       <Form onSubmit={submitHandler}>
@@ -62,7 +62,7 @@ const LoginScreen = ({ location, history }) => {
           ></Form.Control>
         </Form.Group>
 
-        <Button type='submit' variant='primary'>
+        <Button type='submit' variant='primary' className='text-black my-2'>
           Login
         </Button>
       </Form>
@@ -70,8 +70,11 @@ const LoginScreen = ({ location, history }) => {
       <Row className='py-3'>
         <Col>
           Don't have an account?{" "}
-          <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
-            Sign up
+          <Link
+            to={redirect ? `/register?redirect=${redirect}` : "/register"}
+            className='text-dark'
+          >
+            <strong>Sign up</strong>
           </Link>
         </Col>
       </Row>

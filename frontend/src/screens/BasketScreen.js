@@ -60,9 +60,8 @@ const BasketScreen = ({ match, location, history }) => {
 
         {/* If basket is empty, show message */}
         {basketItems.length === 0 ? (
-          <Message>
+          <Message variant='dark'>
             Your shopping basket is currently empty.{" "}
-            <Link to='/'>VIEW PRODUCTS</Link>
           </Message>
         ) : (
           // Otherwise list basket items
@@ -76,10 +75,12 @@ const BasketScreen = ({ match, location, history }) => {
                     <Image src={item.image} alt={item.name} fluid rounded />
                   </Col>
                   <Col md={3}>
-                    <Link to={`/product/${item.product}`}>{item.name}</Link>
+                    <Link to={`/product/${item.product}`} className='text-dark'>
+                      {item.name}
+                    </Link>
                   </Col>
                   <Col md={2}>£{item.price}</Col>
-                  <Col md={2}>
+                  <Col md={2} className='basket-col'>
                     {/* DROP DOWN BOX FOR CHANGING QTY */}
                     <Form.Control
                       className='basket-qty-dropdown'
@@ -99,7 +100,7 @@ const BasketScreen = ({ match, location, history }) => {
                       ))}
                     </Form.Control>
                   </Col>
-                  <Col md={2}>
+                  <Col md={2} className='basket-col'>
                     <Button
                       type='button'
                       variant='light'
@@ -123,7 +124,10 @@ const BasketScreen = ({ match, location, history }) => {
               {/* Calculate total number of items/qty in basket */}
               <h5>
                 Subtotal (
-                {basketItems.reduce((acc, item) => acc + item.quantity, 0)}{" "}
+                {basketItems
+                  .reduce((acc, item) => acc + Number(item.quantity), 0)
+                  .toString()
+                  .replace(/^0+/, "")}{" "}
                 items)
               </h5>
               {/* Calculate total price of all items in basket */}£
@@ -134,7 +138,7 @@ const BasketScreen = ({ match, location, history }) => {
             <ListGroup.Item>
               <Button
                 type='button'
-                className='btn btn-block'
+                className='btn btn-block text-black'
                 disabled={basketItems.length === 0}
                 onClick={checkoutHandler}
               >

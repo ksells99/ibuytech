@@ -48,7 +48,7 @@ const RegisterScreen = ({ location, history }) => {
   return (
     //   REGISTER FORM
     <FormContainer>
-      <h1>Sign Up</h1>
+      <h3 className='my-4 font-weight-bold'>Create an account</h3>
       {message && <Message variant='danger'>{message}</Message>}
       {error && <Message variant='danger'>{error}</Message>}
       {loading && <Loading />}
@@ -93,7 +93,7 @@ const RegisterScreen = ({ location, history }) => {
           ></Form.Control>
         </Form.Group>
 
-        <Button type='submit' variant='primary'>
+        <Button type='submit' variant='primary' className='text-black my-2'>
           Sign Up
         </Button>
       </Form>
@@ -101,8 +101,11 @@ const RegisterScreen = ({ location, history }) => {
       <Row className='py-3'>
         <Col>
           Already have an account?{" "}
-          <Link to={redirect ? `/login?redirect=${redirect}` : "/login"}>
-            Login
+          <Link
+            to={redirect ? `/login?redirect=${redirect}` : "/login"}
+            className='text-dark'
+          >
+            <strong>Login</strong>
           </Link>
         </Col>
       </Row>

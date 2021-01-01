@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Form, Button, Row, Col, Table } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import Moment from "react-moment";
 import Message from "../components/Message";
 import Loading from "../components/Loading";
 import { getUserDetails, updateUserProfile } from "../actions/userActions";
@@ -75,8 +76,8 @@ const ProfileScreen = ({ location, history }) => {
 
   return (
     <Row>
-      <Col md={3}>
-        <h2>Profile</h2>
+      <Col lg={3}>
+        <h3>Profile</h3>
         {message && <Message variant='danger'>{message}</Message>}
         {error && <Message variant='danger'>{error}</Message>}
         {success && (
@@ -124,16 +125,17 @@ const ProfileScreen = ({ location, history }) => {
               onChange={(e) => setPassword2(e.target.value)}
             ></Form.Control>
           </Form.Group>
+          <hr />
 
-          <Button type='submit' variant='primary'>
+          <Button type='submit' variant='primary' className='text-black'>
             Save Details
           </Button>
         </Form>
       </Col>
 
       {/* USER ORDERS LIST */}
-      <Col md={9}>
-        <h2>Your Orders</h2>
+      <Col lg={9}>
+        <h3 className='responsive-margin'>Your Orders</h3>
         {loadingUserOrders ? (
           <Loading />
         ) : errorUserOrders ? (
@@ -142,40 +144,39 @@ const ProfileScreen = ({ location, history }) => {
           <Table striped bordered hover responsive className='table-sm'>
             <thead>
               <tr>
-                {/* <th>ID</th> */}
                 <th>Date</th>
                 <th>Total</th>
                 <th>Paid</th>
                 <th>Delivered</th>
-                <th></th>
               </tr>
             </thead>
             <tbody>
               {orders.map((order) => (
                 <tr key={order._id}>
-                  {/* <td>{order._id}</td> */}
-                  <td>{order.createdAt.substring(0, 10)}</td>
+                  <td>
+                    <Link className='text-dark' to={`/order/${order._id}`}>
+                      <Moment format='DD/MM/YYYY HH:mm'>
+                        {order.createdAt}
+                      </Moment>
+                    </Link>
+                  </td>
                   <td>{order.totalPrice}</td>
                   <td>
                     {order.isPaid ? (
-                      order.paidAt.substring(0, 10)
+                      <i
+                        className='fas fa-check'
+                        style={{ color: "green" }}
+                      ></i>
                     ) : (
                       <i className='fas fa-times' style={{ color: "red" }}></i>
                     )}
                   </td>
                   <td>
                     {order.isDelivered ? (
-                      order.deliveredAt.substring(0, 10)
+                      <Moment format='DD/MM/YYYY'>{order.deliveredAt}</Moment>
                     ) : (
                       <i className='fas fa-times' style={{ color: "red" }}></i>
                     )}
-                  </td>
-                  <td>
-                    <LinkContainer to={`/order/${order._id}`}>
-                      <Button variant='light'>
-                        <i className='fas fa-arrow-circle-right'></i>
-                      </Button>
-                    </LinkContainer>
                   </td>
                 </tr>
               ))}

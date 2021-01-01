@@ -167,7 +167,7 @@ const ProductScreen = ({ history, match }) => {
                     {/* Button disabled if item out of stock */}
                     <Button
                       onClick={addToBasketHandler}
-                      className='btn-block'
+                      className='btn-block text-black'
                       type='button'
                       disabled={product.countInStock === 0}
                     >
@@ -203,7 +203,7 @@ const ProductScreen = ({ history, match }) => {
                 ))}
 
                 {/* ADD REVIEW FORM */}
-                <ListGroup.Item>
+                <ListGroup.Item style={{ paddingLeft: "0px" }} className='mt-2'>
                   <h6>
                     Write a product review for <strong>{product.name}</strong>
                   </h6>
@@ -237,13 +237,20 @@ const ProductScreen = ({ history, match }) => {
                           required
                         ></Form.Control>
                       </Form.Group>
-                      <Button type='submit' variant='primary'>
+                      <Button
+                        type='submit'
+                        variant='primary'
+                        className='text-black'
+                      >
                         Add Review
                       </Button>
                     </Form>
                   ) : (
                     <p>
-                      <Link to='/login'>Login</Link> to write a review
+                      <Link to='/login' className='text-dark font-weight-bold'>
+                        Login
+                      </Link>{" "}
+                      to write a review
                     </p>
                   )}
                 </ListGroup.Item>

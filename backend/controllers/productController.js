@@ -7,7 +7,7 @@ import Product from "../models/productModel.js";
 
 const getProducts = asyncHandler(async (req, res) => {
   // No of products per page
-  const pageSize = 10;
+  const pageSize = 3;
   // Get page number from API URL - if not there, use page 1
   const page = Number(req.query.pageNumber) || 1;
 

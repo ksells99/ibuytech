@@ -162,6 +162,7 @@ const ProductEditScreen = ({ match, history }) => {
               <Form.File
                 id='image-file'
                 label='Upload Image'
+                className='mt-2'
                 custom
                 onChange={uploadFileHandler}
                 accept='image/jpg, image/jpeg, image/png'
@@ -215,7 +216,7 @@ const ProductEditScreen = ({ match, history }) => {
               ></Form.Control>
             </Form.Group>
 
-            <Button type='submit' variant='primary'>
+            <Button type='submit' variant='primary' className='text-black'>
               Save Product
             </Button>
           </Form>

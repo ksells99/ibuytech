@@ -72,6 +72,9 @@ h4 {
 }
 
 /* Search bar */
+.search-container.form-inline {
+  flex-flow: nowrap !important;
+}
 
 .search-container input {
   height: 38px;
@@ -112,7 +115,7 @@ h4 {
 }
 
 /* Product page - ensure qty is always visible */
-@media (min-width: 768px) and (max-width: 1200px) {
+@media (min-width: 768px) and (max-width: 990px) {
   .product-page-section {
     min-width: 350px;
   }
@@ -124,4 +127,37 @@ h4 {
 
 .basket-qty-dropdown {
   cursor: pointer;
+}
+
+.text-black {
+  color: black;
+}
+
+@media (max-width: 991px) {
+  .responsive-margin {
+    margin-top: 4rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hide-sm {
+    display: none;
+  }
+  .basket-col .form-control {
+    width: 100% !important;
+  }
+  .basket-col .btn {
+    width: 100% !important;
+    margin-top: 5px;
+  }
+}
+
+/* PAGINATION */
+.page-item.active .page-link {
+  background-color: #772953;
+  border-color: #772953;
+}
+
+.page-link {
+  color: #772953;
 }

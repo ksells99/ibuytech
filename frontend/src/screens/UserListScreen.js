@@ -40,7 +40,7 @@ const UserListScreen = ({ history }) => {
 
   return (
     <div>
-      <h2>Users</h2>
+      <h3>Users</h3>
       {loading ? (
         <Loading />
       ) : error ? (
@@ -49,7 +49,7 @@ const UserListScreen = ({ history }) => {
         <Table striped bordered hover responsive className='table-sm'>
           <thead>
             <tr>
-              <th>ID</th>
+              {/* <th>ID</th> */}
               <th>Name</th>
               <th>Email</th>
               <th>Admin?</th>
@@ -59,10 +59,12 @@ const UserListScreen = ({ history }) => {
           <tbody>
             {users.map((user) => (
               <tr key={user._id}>
-                <td>{user._id}</td>
+                {/* <td>{user._id}</td> */}
                 <td>{user.name}</td>
                 <td>
-                  <a href={`mailto:${user.email}`}>{user.email}</a>
+                  <a href={`mailto:${user.email}`} className='text-dark'>
+                    {user.email}
+                  </a>
                 </td>
                 {/* Show tick/cross depending on admin status */}
                 <td>

@@ -65,7 +65,7 @@ const UserEditScreen = ({ match, history }) => {
 
       {/* //   EDIT USER FORM */}
       <FormContainer>
-        <h1>Edit User</h1>
+        <h3>Edit User</h3>
         {loadingUpdate && <Loading />}
         {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
         {/* If loading, show loader - if error, show message - otherwise show form */}
@@ -106,7 +106,7 @@ const UserEditScreen = ({ match, history }) => {
               ></Form.Check>
             </Form.Group>
 
-            <Button type='submit' variant='primary'>
+            <Button type='submit' variant='primary' className='text-black'>
               Save User
             </Button>
           </Form>

@@ -22,7 +22,7 @@ const ProductCarousel = () => {
   ) : error ? (
     <Message variant='danger'>{error}</Message>
   ) : (
-    <Carousel pause='hover' style={{ backgroundColor: "#818181" }}>
+    <Carousel pause='hover' style={{ backgroundColor: "#3f3f3f" }}>
       {/* Map through each product & create carousel slide/item */}
       {products.map((product) => (
         <Carousel.Item key={product._id}>

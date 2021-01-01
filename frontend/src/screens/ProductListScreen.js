@@ -74,10 +74,10 @@ const ProductListScreen = ({ history, match }) => {
     <div>
       <Row className='align-items-center'>
         <Col>
-          <h2>Products</h2>
+          <h3>Products</h3>
         </Col>
         <Col className='text-right'>
-          <Button className='my-3' onClick={createProductHandler}>
+          <Button className='my-3 text-black' onClick={createProductHandler}>
             <i className='fas fa-plus'></i> Add Product
           </Button>
         </Col>

@@ -4,6 +4,7 @@ import { PayPalButton } from "react-paypal-button-v2";
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import Moment from "react-moment";
 import Message from "../components/Message";
 import Loading from "../components/Loading";
 import {
@@ -11,7 +12,11 @@ import {
   payOrder,
   deliverOrder,
 } from "../actions/orderActions";
-import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from "../types/orderTypes";
+import {
+  ORDER_PAY_RESET,
+  ORDER_DELIVER_RESET,
+  ORDER_CREATE_RESET,
+} from "../types/orderTypes";
 
 const OrderScreen = ({ match, history }) => {
   // Get order ID from URL
@@ -50,6 +55,9 @@ const OrderScreen = ({ match, history }) => {
   }
 
   useEffect(() => {
+    // Reset order create - PlaceOrderScreen links to this screen when order is successful - if this isn't reset it won't allow user to make another order in the session
+    dispatch({ type: ORDER_CREATE_RESET });
+
     // Redirect to login if user not logged in
     if (!userInfo) {
       history.push("/login");
@@ -113,19 +121,26 @@ const OrderScreen = ({ match, history }) => {
     <Message variant='danger'>{error}</Message>
   ) : (
     <div>
-      <h2 style={{ padding: ".75rem 1.25rem" }}>Order {order._id}</h2>
+      <section style={{ padding: ".75rem 1.25rem" }}>
+        <h3>
+          Order <Moment format='DD/MM/YYYY HH:mm'>{order.createdAt}</Moment>
+        </h3>
+        <p>ID: {order._id}</p>
+      </section>
       <Row>
         <Col md={8}>
           <ListGroup variant='flush'>
             <ListGroup.Item>
-              <h3>Shipping</h3>
+              <h4>Shipping</h4>
               <p>
                 <strong>Name: </strong> {order.user.name}
               </p>
 
               <p>
                 <strong>Email address: </strong>
-                <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
+                <a href={`mailto:${order.user.email}`} className='text-dark'>
+                  {order.user.email}
+                </a>
               </p>
               <p>
                 <strong>Shipping address: </strong>
@@ -135,22 +150,27 @@ const OrderScreen = ({ match, history }) => {
               </p>
               {order.isDelivered ? (
                 <Message variant='success'>
-                  Delivered on {order.deliveredAt}
+                  <i className='fas fa-truck'></i> Delivered on{" "}
+                  <Moment format='DD/MM/YYYY HH:mm'>{order.deliveredAt}</Moment>
                 </Message>
               ) : (
                 <Message variant='warning'>
-                  <i className='fas fa-truck'></i> Order not delivered
+                  <i className='fas fa-exclamation-triangle'></i> Order not
+                  delivered
                 </Message>
               )}
             </ListGroup.Item>
             <ListGroup.Item>
-              <h3>Payment Method</h3>
+              <h4>Payment Method</h4>
               <p>
                 <strong>Method: </strong>
                 {order.paymentMethod}
               </p>
               {order.isPaid ? (
-                <Message variant='success'>Paid on {order.paidAt}</Message>
+                <Message variant='success'>
+                  <i className='far fa-credit-card'></i> Paid on{" "}
+                  <Moment format='DD/MM/YYYY HH:mm'>{order.paidAt}</Moment>
+                </Message>
               ) : (
                 <Message variant='warning'>
                   <i className='fas fa-exclamation-triangle'></i> Order not yet
@@ -159,15 +179,15 @@ const OrderScreen = ({ match, history }) => {
               )}
             </ListGroup.Item>
             <ListGroup.Item>
-              <h3>Order Items</h3>
+              <h4>Order Items</h4>
               {order.orderItems.length === 0 ? (
                 <Message>Order contains no items.</Message>
               ) : (
                 <ListGroup variant='flush'>
                   {order.orderItems.map((item, index) => (
-                    <ListGroup.Item key={index}>
+                    <ListGroup.Item style={{ paddingLeft: "0px" }} key={index}>
                       <Row>
-                        <Col md={1}>
+                        <Col>
                           <Image
                             src={item.image}
                             alt={item.name}
@@ -176,7 +196,10 @@ const OrderScreen = ({ match, history }) => {
                           />
                         </Col>
                         <Col>
-                          <Link to={`/product/${item.product}`}>
+                          <Link
+                            to={`/product/${item.product}`}
+                            className='text-dark'
+                          >
                             {item.name}
                           </Link>
                         </Col>
@@ -221,7 +244,9 @@ const OrderScreen = ({ match, history }) => {
                   <Col>
                     <strong>Total</strong>
                   </Col>
-                  <Col>£{order.totalPrice}</Col>
+                  <Col>
+                    <strong>£{order.totalPrice}</strong>
+                  </Col>
                 </Row>
               </ListGroup.Item>
 
