@@ -247,7 +247,10 @@ const ProductScreen = ({ history, match }) => {
                     </Form>
                   ) : (
                     <p>
-                      <Link to='/login' className='text-dark font-weight-bold'>
+                      <Link
+                        to={`/login?redirect=product/${product._id}`}
+                        className='text-dark font-weight-bold'
+                      >
                         Login
                       </Link>{" "}
                       to write a review

@@ -8,14 +8,17 @@ import {
   createProduct,
   createProductReview,
   getTopProducts,
+  getActiveAndArchivedProducts,
 } from "../controllers/productController.js";
 import { protect, adminProtect } from "../middleware/authMiddleware.js";
 
 // Use controllers imported above
-// Get all products, add product & review, get top products.
+// Get all active products, add product & review, get top products.
 router.route("/").get(getProducts).post(protect, adminProtect, createProduct);
 router.route("/:id/reviews").post(protect, createProductReview);
 router.get("/top", getTopProducts);
+// Get all active & archived products - admin
+router.get("/all", protect, adminProtect, getActiveAndArchivedProducts);
 
 // Get specific product by ID
 // & delete/add/update product (admin protected)

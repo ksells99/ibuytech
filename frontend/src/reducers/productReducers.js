@@ -2,6 +2,10 @@ import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
   PRODUCT_LIST_FAIL,
+  ADMIN_PRODUCT_LIST_REQUEST,
+  ADMIN_PRODUCT_LIST_SUCCESS,
+  ADMIN_PRODUCT_LIST_FAIL,
+  ADMIN_PRODUCT_LIST_CLEAR,
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
@@ -48,6 +52,41 @@ export const productListReducer = (
       return {
         loading: false,
         error: action.payload,
+      };
+    default:
+      // Return initial state (empty array of products)
+      return state;
+  }
+};
+
+// ALL ACTIVE & INACTIVE PRODUCTS (admin)
+export const adminProductListReducer = (
+  state = { products: [], error: null, loading: false },
+  action
+) => {
+  switch (action.type) {
+    case ADMIN_PRODUCT_LIST_REQUEST:
+      return {
+        loading: true,
+        products: [],
+      };
+    case ADMIN_PRODUCT_LIST_SUCCESS:
+      return {
+        loading: false,
+        products: action.payload.products,
+        pages: action.payload.pages,
+        page: action.payload.page,
+      };
+    case ADMIN_PRODUCT_LIST_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case ADMIN_PRODUCT_LIST_CLEAR:
+      return {
+        products: [],
+        error: null,
+        loading: false,
       };
     default:
       // Return initial state (empty array of products)

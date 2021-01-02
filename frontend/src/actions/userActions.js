@@ -29,6 +29,7 @@ import {
 } from "../types/userTypes";
 import { ORDER_DETAILS_RESET, USER_ORDERS_CLEAR } from "../types/orderTypes";
 import { BASKET_CLEAR } from "../types/basketTypes";
+import { ADMIN_PRODUCT_LIST_CLEAR } from "../types/productTypes";
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -83,6 +84,7 @@ export const logout = () => (dispatch) => {
   dispatch({ type: USER_ORDERS_CLEAR });
   dispatch({ type: ORDER_DETAILS_RESET });
   dispatch({ type: BASKET_CLEAR });
+  dispatch({ type: ADMIN_PRODUCT_LIST_CLEAR });
 };
 
 export const register = (name, email, password) => async (dispatch) => {

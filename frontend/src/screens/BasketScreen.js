@@ -124,10 +124,12 @@ const BasketScreen = ({ match, location, history }) => {
               {/* Calculate total number of items/qty in basket */}
               <h5>
                 Subtotal (
-                {basketItems
-                  .reduce((acc, item) => acc + Number(item.quantity), 0)
-                  .toString()
-                  .replace(/^0+/, "")}{" "}
+                {basketItems && basketItems.length > 0
+                  ? basketItems
+                      .reduce((acc, item) => acc + Number(item.quantity), 0)
+                      .toString()
+                      .replace(/^0+/, "")
+                  : "0"}{" "}
                 items)
               </h5>
               {/* Calculate total price of all items in basket */}£

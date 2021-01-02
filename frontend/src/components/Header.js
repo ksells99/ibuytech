@@ -46,6 +46,7 @@ const Header = () => {
                   <Nav.Link exact>
                     <i className='fas fa-shopping-cart mr-2'></i>
 
+                    {/* Show no. items in basket */}
                     {basketItems && basketItems.length > 0
                       ? `Basket (${basketItems
                           .reduce((acc, item) => acc + Number(item.quantity), 0)

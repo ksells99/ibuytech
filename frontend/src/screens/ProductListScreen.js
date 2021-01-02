@@ -4,23 +4,22 @@ import { Table, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loading from "../components/Loading";
-import Paginate from "../components/Paginate";
 import {
-  listProducts,
+  listActiveAndInactiveProducts,
   deleteProduct,
   createProduct,
 } from "../actions/productActions";
 import { PRODUCT_CREATE_RESET } from "../types/productTypes";
 
 const ProductListScreen = ({ history, match }) => {
-  // Check URL for page number - if not present, use 1
-  const pageNumber = match.params.pageNumber || 1;
+  // // Check URL for page number - if not present, use 1
+  // const pageNumber = match.params.pageNumber || 1;
 
   const dispatch = useDispatch();
 
   //   Get state
-  const productList = useSelector((state) => state.productList);
-  const { loading, error, products, pages, page } = productList;
+  const productList = useSelector((state) => state.adminProductList);
+  const { loading, error, products } = productList;
 
   const productDelete = useSelector((state) => state.productDelete);
   const {
@@ -55,16 +54,20 @@ const ProductListScreen = ({ history, match }) => {
 
       // Else dispatch action to get list (pass in empty string for keyword (as not used for admin) & page num)
     } else {
-      dispatch(listProducts("", pageNumber));
+      dispatch(listActiveAndInactiveProducts());
     }
-  }, [dispatch, history, userInfo, successDelete, successCreate, pageNumber]);
+  }, [dispatch, history, userInfo, successDelete, successCreate]);
 
-  const deleteProductHandler = (id) => {
-    if (window.confirm(`Are you sure you wish to delete product ${id}?`)) {
-      // Dispatch action to delete, pass in ID
-      dispatch(deleteProduct(id));
-    }
-  };
+  // const deleteProductHandler = (id) => {
+  //   if (
+  //     window.confirm(
+  //       `Are you sure you wish to delete product ${id}? This will also delete any orders containing the product!`
+  //     )
+  //   ) {
+  //     // Dispatch action to delete, pass in ID
+  //     dispatch(deleteProduct(id));
+  //   }
+  // };
 
   const createProductHandler = () => {
     dispatch(createProduct());
@@ -96,6 +99,7 @@ const ProductListScreen = ({ history, match }) => {
             <thead>
               <tr>
                 <th>ID</th>
+                <th>Active?</th>
                 <th>Name</th>
                 <th>Brand</th>
                 <th>Price</th>
@@ -107,6 +111,16 @@ const ProductListScreen = ({ history, match }) => {
               {products.map((product) => (
                 <tr key={product._id}>
                   <td>{product._id}</td>
+                  <td>
+                    {product.isActive ? (
+                      <i
+                        className='fas fa-check'
+                        style={{ color: "green" }}
+                      ></i>
+                    ) : (
+                      <i className='fas fa-times' style={{ color: "red" }}></i>
+                    )}
+                  </td>
                   <td>{product.name}</td>
                   <td>{product.brand}</td>
                   <td>£{product.price}</td>
@@ -119,19 +133,18 @@ const ProductListScreen = ({ history, match }) => {
                         <i className='fas fa-edit'></i>
                       </Button>
                     </LinkContainer>
-                    <Button
+                    {/* <Button
                       variant='danger'
                       className='btn-sm'
                       onClick={() => deleteProductHandler(product._id)}
                     >
                       <i className='fas fa-trash'></i>
-                    </Button>
+                    </Button> */}
                   </td>
                 </tr>
               ))}
             </tbody>
           </Table>
-          <Paginate pages={pages} page={page} isAdmin={true} />
         </>
       )}
     </div>

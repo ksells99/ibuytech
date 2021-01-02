@@ -22,6 +22,7 @@ const ProductEditScreen = ({ match, history }) => {
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [isActive, setIsActive] = useState(true);
 
   const dispatch = useDispatch();
 
@@ -56,6 +57,7 @@ const ProductEditScreen = ({ match, history }) => {
         setBrand(product.brand);
         setCategory(product.category);
         setCountInStock(product.countInStock);
+        setIsActive(product.isActive);
       }
     }
   }, [product.name, dispatch, productId, history, successUpdate]);
@@ -103,6 +105,7 @@ const ProductEditScreen = ({ match, history }) => {
         brand,
         description,
         countInStock,
+        isActive,
       })
     );
   };
@@ -214,6 +217,15 @@ const ProductEditScreen = ({ match, history }) => {
                 onChange={(e) => setDescription(e.target.value)}
                 required
               ></Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId='isActive'>
+              <Form.Check
+                type='checkbox'
+                label='Active?'
+                checked={isActive}
+                onChange={(e) => setIsActive(e.target.checked)}
+              ></Form.Check>
             </Form.Group>
 
             <Button type='submit' variant='primary' className='text-black'>

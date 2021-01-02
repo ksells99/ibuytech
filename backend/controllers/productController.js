@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import Product from "../models/productModel.js";
 
-// @desc    Fetch all products. Async handler means no trycatch required
+// @desc    Fetch all active products. Async handler means no trycatch required
 // @route   GET /api/products
 // @access  Public
 
@@ -23,16 +23,26 @@ const getProducts = asyncHandler(async (req, res) => {
       }
     : {};
 
-  // Get count of products matching search keyword
-  const count = await Product.countDocuments({ ...keyword });
+  // Get count of active products matching search keyword
+  const count = await Product.countDocuments({ ...keyword, isActive: true });
 
-  //   Find all from DB (based on search keyword )& return result - limit to pageSize specified above, skip depending on page number
-  const products = await Product.find({ ...keyword })
+  //   Find all active from DB (based on search keyword )& return result - limit to pageSize specified above, skip depending on page number
+  const products = await Product.find({ ...keyword, isActive: true })
     .limit(pageSize)
     .skip(pageSize * (page - 1));
 
   // Send product back - also send page number and how many pages
   res.json({ products, page, pages: Math.ceil(count / pageSize) });
+});
+
+// @desc    Fetch all products (inc. active, archived).
+// @route   GET /api/products/all
+// @access  Private (ADMIN)
+
+const getActiveAndArchivedProducts = asyncHandler(async (req, res) => {
+  //   Find all products from DB
+  const products = await Product.find();
+  res.json({ products });
 });
 
 // @desc    Fetch specific product
@@ -90,6 +100,7 @@ const createProduct = asyncHandler(async (req, res) => {
     countInStock: 0,
     numReviews: 0,
     description: "Product Description",
+    isActive: true,
   });
 
   // Save to DB
@@ -111,6 +122,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     brand,
     countInStock,
     category,
+    isActive,
   } = req.body;
 
   // Get product by ID from URL
@@ -125,6 +137,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.brand = brand;
     product.category = category;
     product.countInStock = countInStock;
+    product.isActive = isActive;
 
     // Save to DB
     const updatedProduct = await product.save();
@@ -197,6 +210,7 @@ const getTopProducts = asyncHandler(async (req, res) => {
 
 export {
   getProducts,
+  getActiveAndArchivedProducts,
   getTopProducts,
   getProductById,
   deleteProduct,

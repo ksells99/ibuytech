@@ -3,6 +3,9 @@ import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
   PRODUCT_LIST_FAIL,
+  ADMIN_PRODUCT_LIST_REQUEST,
+  ADMIN_PRODUCT_LIST_SUCCESS,
+  ADMIN_PRODUCT_LIST_FAIL,
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
@@ -44,6 +47,41 @@ export const listProducts = (keyword = "", pageNumber = "") => async (
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_FAIL,
+      // If specific error returend, dispatch it, otherwise dispatch generic error
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// GET ALL ACTIVE & INACTIVE PRODUCTS (admin)
+export const listActiveAndInactiveProducts = () => async (
+  dispatch,
+  getState
+) => {
+  try {
+    // Send request to set loading to true
+    dispatch({ type: ADMIN_PRODUCT_LIST_REQUEST });
+
+    // Get token as need to ensure user is admin
+    const config = {
+      headers: {
+        // Get token from userInfo state
+        Authorization: `Bearer ${getState().userLogin.userInfo.token}`,
+      },
+    };
+
+    // Get data (pass in search keyword & page num if exists) and dispatch
+    const { data } = await axios.get(`/api/products/all`, config);
+    dispatch({
+      type: ADMIN_PRODUCT_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ADMIN_PRODUCT_LIST_FAIL,
       // If specific error returend, dispatch it, otherwise dispatch generic error
       payload:
         error.response && error.response.data.message
