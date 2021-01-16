@@ -10,12 +10,14 @@
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "data:import": "node backend/seeder",
-    "data:destroy": "node backend/seeder -d"
+    "data:destroy": "node backend/seeder -d",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
   },
   "author": "Kai Sells",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.23.0",
     "colors": "^1.4.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
