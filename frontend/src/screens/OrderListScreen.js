@@ -6,6 +6,7 @@ import Moment from "react-moment";
 import Message from "../components/Message";
 import Loading from "../components/Loading";
 import { getAllOrders } from "../actions/orderActions";
+import Meta from "../components/Meta";
 
 const OrderListScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ const OrderListScreen = ({ history }) => {
 
   return (
     <div>
+      <Meta title={`Order List - Admin | iBuyTech`} />
       <h3>Orders</h3>
       {loading ? (
         <Loading />

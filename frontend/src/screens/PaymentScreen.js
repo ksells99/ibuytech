@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { savePaymentMethod } from "../actions/basketActions";
+import Meta from "../components/Meta";
 
 const PaymentScreen = ({ history }) => {
   // // Get basket from state
@@ -34,32 +35,35 @@ const PaymentScreen = ({ history }) => {
   };
 
   return (
-    <FormContainer>
-      <h1>Checkout</h1>
-      <CheckoutSteps step1 step2 />
-      <Form onSubmit={submitHandler}>
-        <Form.Group>
-          <Form.Label as='legend'>Select payment method</Form.Label>
+    <div>
+      <Meta title={`Checkout | iBuyTech`} />
+      <FormContainer>
+        <h1>Checkout</h1>
+        <CheckoutSteps step1 step2 />
+        <Form onSubmit={submitHandler}>
+          <Form.Group>
+            <Form.Label as='legend'>Select payment method</Form.Label>
 
-          <Col>
-            {/* PAYMENT METHOD RADIO BUTTONS */}
-            <Form.Check
-              type='radio'
-              label='PayPal or Debit/Credit Card'
-              id='PayPal'
-              name='paymentMethod'
-              value='PayPal'
-              checked
-              onChange={(e) => setPaymentMethod(e.target.value)}
-            ></Form.Check>
-          </Col>
-        </Form.Group>
+            <Col>
+              {/* PAYMENT METHOD RADIO BUTTONS */}
+              <Form.Check
+                type='radio'
+                label='PayPal or Debit/Credit Card'
+                id='PayPal'
+                name='paymentMethod'
+                value='PayPal'
+                checked
+                onChange={(e) => setPaymentMethod(e.target.value)}
+              ></Form.Check>
+            </Col>
+          </Form.Group>
 
-        <Button type='submit' variant='primary'>
-          Continue
-        </Button>
-      </Form>
-    </FormContainer>
+          <Button type='submit' variant='primary'>
+            Continue
+          </Button>
+        </Form>
+      </FormContainer>
+    </div>
   );
 };
 

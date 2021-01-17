@@ -7,6 +7,7 @@ import Loading from "../components/Loading";
 import FormContainer from "../components/FormContainer";
 import { getUserDetails, updateUser } from "../actions/userActions";
 import { USER_UPDATE_RESET } from "../types/userTypes";
+import Meta from "../components/Meta";
 
 const UserEditScreen = ({ match, history }) => {
   // Get user ID from URL
@@ -59,6 +60,7 @@ const UserEditScreen = ({ match, history }) => {
 
   return (
     <div>
+      <Meta title={`Edit User - Admin | iBuyTech`} />
       <Link to='/admin/userlist' className='btn btn-light my-3'>
         Back
       </Link>

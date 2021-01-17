@@ -6,10 +6,10 @@ import Message from "../components/Message";
 import Loading from "../components/Loading";
 import {
   listActiveAndInactiveProducts,
-  deleteProduct,
   createProduct,
 } from "../actions/productActions";
 import { PRODUCT_CREATE_RESET } from "../types/productTypes";
+import Meta from "../components/Meta";
 
 const ProductListScreen = ({ history, match }) => {
   // // Check URL for page number - if not present, use 1
@@ -56,6 +56,8 @@ const ProductListScreen = ({ history, match }) => {
     } else {
       dispatch(listActiveAndInactiveProducts());
     }
+
+    // eslint-disable-next-line
   }, [dispatch, history, userInfo, successDelete, successCreate]);
 
   // const deleteProductHandler = (id) => {
@@ -75,6 +77,7 @@ const ProductListScreen = ({ history, match }) => {
 
   return (
     <div>
+      <Meta title={`Product List - Admin | iBuyTech`} />
       <Row className='align-items-center'>
         <Col>
           <h3>Products</h3>

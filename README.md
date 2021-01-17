@@ -19,27 +19,27 @@ New features I added:
 ### Shopping
 
 _Homepage_
-![Showcase1](/showcase-home.png?raw=true "Showcase1")
+![Showcase1](/showcase-images/showcase-home.png?raw=true "Showcase1")
 
 _Product page_
-![Showcase2](/showcase-product.png?raw=true "Showcase2")
+![Showcase2](/showcase-images/showcase-product.png?raw=true "Showcase2")
 
 _Basket_
-![Showcase3](/showcase-basket.png?raw=true "Showcase3")
+![Showcase3](/showcase-images/showcase-basket.png?raw=true "Showcase3")
 
 _Order page_
-![Showcase4](/showcase-order.png?raw=true "Showcase4")
+![Showcase4](/showcase-images/showcase-order.png?raw=true "Showcase4")
 
 _User profile/orders_
-![Showcase5](/showcase-orders.png?raw=true "Showcase5")
+![Showcase5](/showcase-images/showcase-orders.png?raw=true "Showcase5")
 
 ### Admin
 
 _User list_
-![Showcase6](/showcase-admin-users.png?raw=true "Showcase6")
+![Showcase6](/showcase-images/showcase-admin-users.png?raw=true "Showcase6")
 
 _Product list_
-![Showcase7](/showcase-admin-products.png?raw=true "Showcase7")
+![Showcase7](/showcase-images/showcase-admin-products.png?raw=true "Showcase7")
 
 _Order list_
-![Showcase8](/showcase-admin-orders.png?raw=true "Showcase8")
+![Showcase8](/showcase-images/showcase-admin-orders.png?raw=true "Showcase8")

@@ -1,10 +1,8 @@
 import axios from "axios";
-import { useSelector } from "react-redux";
 import {
   BASKET_ADD_ITEM,
   BASKET_REMOVE_ITEM,
   BASKET_SAVE_PAYMENT_METHOD,
-  BASKET_SAVE_SHIPPING_ADDRESS,
 } from "../types/basketTypes";
 
 export const addToBasket = (id, quantity) => async (dispatch, getState) => {

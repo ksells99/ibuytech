@@ -6,6 +6,7 @@ import Message from "../components/Message";
 import Loading from "../components/Loading";
 import FormContainer from "../components/FormContainer";
 import { login } from "../actions/userActions";
+import Meta from "../components/Meta";
 
 const LoginScreen = ({ location, history }) => {
   // Initial login form state
@@ -37,48 +38,51 @@ const LoginScreen = ({ location, history }) => {
   };
 
   return (
-    //   LOGIN FORM
-    <FormContainer>
-      <h3 className='my-4 font-weight-bold'>Login to your account</h3>
-      {error && <Message variant='danger'>{error}</Message>}
-      {loading && <Loading />}
-      <Form onSubmit={submitHandler}>
-        <Form.Group controlId='email'>
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            type='email'
-            placeholder='Enter email address'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-        <Form.Group controlId='password'>
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type='password'
-            placeholder='Enter password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+    <div>
+      <Meta title={`Login | iBuyTech`} />
+      {/* //   LOGIN FORM */}
+      <FormContainer>
+        <h3 className='my-4 font-weight-bold'>Login to your account</h3>
+        {error && <Message variant='danger'>{error}</Message>}
+        {loading && <Loading />}
+        <Form onSubmit={submitHandler}>
+          <Form.Group controlId='email'>
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              type='email'
+              placeholder='Enter email address'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
+          <Form.Group controlId='password'>
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type='password'
+              placeholder='Enter password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
 
-        <Button type='submit' variant='primary' className='text-black my-2'>
-          Login
-        </Button>
-      </Form>
+          <Button type='submit' variant='primary' className='text-black my-2'>
+            Login
+          </Button>
+        </Form>
 
-      <Row className='py-3'>
-        <Col>
-          Don't have an account?{" "}
-          <Link
-            to={redirect ? `/register?redirect=${redirect}` : "/register"}
-            className='text-dark'
-          >
-            <strong>Sign up</strong>
-          </Link>
-        </Col>
-      </Row>
-    </FormContainer>
+        <Row className='py-3'>
+          <Col>
+            Don't have an account?{" "}
+            <Link
+              to={redirect ? `/register?redirect=${redirect}` : "/register"}
+              className='text-dark'
+            >
+              <strong>Sign up</strong>
+            </Link>
+          </Col>
+        </Row>
+      </FormContainer>
+    </div>
   );
 };
 

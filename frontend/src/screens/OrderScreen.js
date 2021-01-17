@@ -17,6 +17,7 @@ import {
   ORDER_DELIVER_RESET,
   ORDER_CREATE_RESET,
 } from "../types/orderTypes";
+import Meta from "../components/Meta";
 
 const OrderScreen = ({ match, history }) => {
   // Get order ID from URL
@@ -102,6 +103,8 @@ const OrderScreen = ({ match, history }) => {
         setSdkReady(true);
       }
     }
+
+    // eslint-disable-next-line
   }, [order, orderId, successPay, successDeliver, dispatch]);
 
   const successPaymentHandler = (paymentResult) => {
@@ -121,6 +124,7 @@ const OrderScreen = ({ match, history }) => {
     <Message variant='danger'>{error}</Message>
   ) : (
     <div>
+      <Meta title={`Order ${order._id}| iBuyTech`} />
       <section style={{ padding: ".75rem 1.25rem" }}>
         <h3>
           Order <Moment format='DD/MM/YYYY HH:mm'>{order.createdAt}</Moment>

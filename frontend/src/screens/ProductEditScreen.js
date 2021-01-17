@@ -5,6 +5,7 @@ import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loading from "../components/Loading";
+import Meta from "../components/Meta";
 import FormContainer from "../components/FormContainer";
 import { listProductDetails, updateProduct } from "../actions/productActions";
 import { PRODUCT_UPDATE_RESET } from "../types/productTypes";
@@ -60,6 +61,8 @@ const ProductEditScreen = ({ match, history }) => {
         setIsActive(product.isActive);
       }
     }
+
+    // eslint-disable-next-line
   }, [product.name, dispatch, productId, history, successUpdate]);
 
   // Image upload handler
@@ -112,6 +115,7 @@ const ProductEditScreen = ({ match, history }) => {
 
   return (
     <div>
+      <Meta title={`Edit Product - Admin | iBuyTech`} />
       <Link to='/admin/productlist' className='btn btn-light my-3'>
         Back
       </Link>

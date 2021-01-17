@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -6,6 +6,7 @@ import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { createOrder } from "../actions/orderActions";
 import { getUserDetails } from "../actions/userActions";
+import Meta from "../components/Meta";
 
 const PlaceOrderScreen = ({ history }) => {
   // Get basket from state
@@ -56,6 +57,8 @@ const PlaceOrderScreen = ({ history }) => {
       // If order successful, take user to details of the order
       history.push(`/order/${order._id}`);
     }
+
+    // eslint-disable-next-line
   }, [history, success, order, user]);
 
   const placeOrderHandler = () => {
@@ -75,6 +78,7 @@ const PlaceOrderScreen = ({ history }) => {
 
   return (
     <div>
+      <Meta title={`Checkout | iBuyTech`} />
       <CheckoutSteps step1 step2 step3 />
       <Row>
         <Col md={8}>
@@ -114,7 +118,10 @@ const PlaceOrderScreen = ({ history }) => {
                           />
                         </Col>
                         <Col>
-                          <Link to={`/product/${item.product}`}>
+                          <Link
+                            class='text-dark'
+                            to={`/product/${item.product}`}
+                          >
                             {item.name}
                           </Link>
                         </Col>
@@ -174,7 +181,7 @@ const PlaceOrderScreen = ({ history }) => {
               <ListGroup.Item>
                 <Button
                   type='button'
-                  className='btn-block'
+                  className='btn-block text-black'
                   variant='primary'
                   disabled={basket.basketItems.length === 0}
                   onClick={placeOrderHandler}
